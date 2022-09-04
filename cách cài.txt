@@ -1,0 +1,10 @@
+- Các bước setup:
++ composer install
++ copy tên .env.example thành .env
++ php artisan key:generate
++ Đặt tên database .env
++ npm install
++ npm run watch
++ xóa file storage trong public cũ rồi chạy php artisan storage:link
++ lấy file public rar giải nén rồi đưa vào source/storage/app (bỏ qua dán file .gitignore) 
++ php artisan serve
