@@ -33,13 +33,13 @@
             <td>{{number_format($order->total_amount,0)}} vnđ</td>
             <td>
                 @if($order->status=='new')
-                  <span class="badge badge-primary">{{$order->status}}</span>
+                    <span class="badge badge-primary">Đơn hàng mới</span>
                 @elseif($order->status=='process')
-                  <span class="badge badge-warning">{{$order->status}}</span>
+                    <span class="badge badge-warning">Đang giao hàng</span>
                 @elseif($order->status=='delivered')
-                  <span class="badge badge-success">{{$order->status}}</span>
+                    <span class="badge badge-success">Đã giao hàng</span>
                 @else
-                  <span class="badge badge-danger">{{$order->status}}</span>
+                    <span class="badge badge-danger">Đơn hàng đã bị hủy</span>
                 @endif
             </td>
             <td>
@@ -76,7 +76,15 @@
                     </tr>
                     <tr>
                         <td>Trạng thái đơn hàng</td>
-                        <td> : {{$order->status}}</td>
+                        @if($order->status=='new')
+                            <td >Đơn hàng mới</td>
+                        @elseif($order->status=='process')
+                            <td >Đang giao hàng</td>
+                        @elseif($order->status=='delivered')
+                            <td >Đã giao hàng</td>
+                        @else
+                            <td >Đơn hàng đã bị hủy</td>
+                        @endif
                     </tr>
                     <tr>
                         <td>Phí vận chuyển</td>
@@ -108,7 +116,7 @@
               <table class="table">
                     <tr class="">
                         <td>Tên đầy đủ</td>
-                        <td> : {{$order->first_name}} {{$order->last_name}}</td>
+                        <td> : {{$order->first_name}}</td>
                     </tr>
                     <tr>
                         <td>Email</td>

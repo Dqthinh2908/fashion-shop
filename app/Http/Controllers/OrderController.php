@@ -48,7 +48,6 @@ class OrderController extends Controller
             'first_name' => 'string|required',
             'last_name' => 'string|required',
             'address1' => 'string|required',
-            'address2' => 'string|nullable',
             'coupon' => 'nullable|numeric',
             'phone' => 'numeric|required',
             'post_code' => 'string|nullable',
@@ -114,7 +113,7 @@ class OrderController extends Controller
         }
         Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
-        // dd($users);        
+        // dd($users);
         request()->session()->flash('success', 'Sản phẩm của bạn đã được đặt hàng thành công');
         return redirect()->route('home');
     }
@@ -235,7 +234,7 @@ class OrderController extends Controller
         // return $order;
         $file_name = $order->order_number . '-' . $order->first_name . '.pdf';
         // return $file_name;
-        $pdf = PDF::loadview('backend.order.pdf', compact('order'));
+        $pdf = \Barryvdh\DomPDF\PDF::loadview('backend.order.pdf', compact('order'));
         return $pdf->download($file_name);
     }
     // Income chart

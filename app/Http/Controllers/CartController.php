@@ -20,12 +20,15 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        // dd($request->all());
+        if (empty(Auth()->user()->id)) {
+            request()->session()->flash('error', 'Vui lòng đăng nhập');
+            return back();
+        }
         if (empty($request->slug)) {
             request()->session()->flash('error', 'Sản phẩm không hợp lệ');
             return back();
         }
-        $product = Product::where('slug', $request->slug)->first();
+        $product = $this->product::where('slug', $request->slug)->first();
         // return $product;
         if (empty($product)) {
             request()->session()->flash('error', 'Sản phẩm không hợp lệ');
@@ -49,6 +52,7 @@ class CartController extends Controller
             $cart->price = ($product->price - ($product->price * $product->discount) / 100);
             $cart->quantity = 1;
             $cart->amount = $cart->price * $cart->quantity;
+            $cart->size_product = $request->size_product;
             if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error', 'Hàng không đủ!.');
             $cart->save();
             $wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id', null)->update(['cart_id' => $cart->id]);
@@ -59,14 +63,18 @@ class CartController extends Controller
 
     public function singleAddToCart(Request $request)
     {
+
         $request->validate([
             'slug'      =>  'required',
             'quant'      =>  'required',
         ]);
-        // dd($request->quant[1]);
 
+        if (empty(Auth()->user()->id)) {
+            request()->session()->flash('error', 'Vui lòng đăng nhập');
+            return back();
+        }
 
-        $product = Product::where('slug', $request->slug)->first();
+        $product = Product::where('slug', trim($request->slug))->first();
         if ($product->stock < $request->quant[1]) {
             return back()->with('error', 'Hết hàng, Bạn có thể bổ sung các sản phẩm khác.');
         }
@@ -76,9 +84,7 @@ class CartController extends Controller
         }
 
         $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->where('product_id', $product->id)->first();
-
         // return $already_cart;
-
         if ($already_cart) {
             $already_cart->quantity = $already_cart->quantity + $request->quant[1];
             // $already_cart->price = ($product->price * $request->quant[1]) + $already_cart->price ;
@@ -94,6 +100,7 @@ class CartController extends Controller
             $cart->product_id = $product->id;
             $cart->price = ($product->price - ($product->price * $product->discount) / 100);
             $cart->quantity = $request->quant[1];
+            $cart->size_product = $request->size_product;
             $cart->amount = ($product->price * $request->quant[1]);
             if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error', 'Hàng không đủ!');
             // return $cart;
@@ -157,6 +164,12 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
-        return view('frontend.pages.checkout');
+        $user_profile = '';
+        $country_items = Config('country') ?? '';
+        if(Auth::check())
+        {
+            $user_profile = Auth()->user();
+        }
+        return view('frontend.pages.checkout',compact('user_profile','country_items'));
     }
 }

@@ -29,10 +29,10 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($orders as $order)  
+            @foreach($orders as $order)
             @php
                 $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
-            @endphp 
+            @endphp
                 <tr>
                     <td>{{$order->id}}</td>
                     <td>{{$order->order_number}}</td>
@@ -43,25 +43,25 @@
                     <td>{{number_format($order->total_amount,0)}} vnđ</td>
                     <td>
                         @if($order->status=='new')
-                          <span class="badge badge-primary">{{$order->status}}</span>
+                          <span class="badge badge-primary">Đơn hàng mới</span>
                         @elseif($order->status=='process')
-                          <span class="badge badge-warning">{{$order->status}}</span>
+                          <span class="badge badge-warning">Đang giao hàng</span>
                         @elseif($order->status=='delivered')
-                          <span class="badge badge-success">{{$order->status}}</span>
+                          <span class="badge badge-success">Đã giao hàng</span>
                         @else
-                          <span class="badge badge-danger">{{$order->status}}</span>
+                          <span class="badge badge-danger">Đơn hàng đã bị hủy</span>
                         @endif
                     </td>
                     <td>
                         <a href="{{route('order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:25px; width:25px;border-radius:50%" data-toggle="tooltip" title="Xem" data-placement="bottom"><i style="font-size: 15px;margin-left: -4px" class="fas fa-eye"></i></a>
                         <a href="{{route('order.edit',$order->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:25px; width:25px;border-radius:50%" data-toggle="tooltip" title="Sửa" data-placement="bottom"><i style="font-size: 15px;margin-left: -4px" class="fas fa-edit"></i></a>
                         <form method="POST" action="{{route('order.destroy',[$order->id])}}">
-                          @csrf 
+                          @csrf
                           @method('delete')
                               <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:25px; width:25px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Xóa"><i style="font-size: 15px;margin-left: -4px" class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
-                </tr>  
+                </tr>
             @endforeach
           </tbody>
         </table>
@@ -94,7 +94,7 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
-      
+
       $('#order-dataTable').DataTable( {
             "columnDefs":[
                 {
@@ -107,7 +107,7 @@
         // Sweet alert
 
         function deleteData(id){
-            
+
         }
   </script>
   <script>
@@ -123,7 +123,7 @@
             // alert(dataID);
             e.preventDefault();
             swal({
-                  title: "Bạn chắc chưa?",
+                  title: "Bạn có muốn xóa dữ liệu?",
                   text: "Nếu bạn xóa, không thể phục hồi lại dữ liệu!",
                   icon: "warning",
                   buttons: true,

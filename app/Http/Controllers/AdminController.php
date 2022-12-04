@@ -56,7 +56,7 @@ class AdminController extends Controller
 
     public function settingsUpdate(Request $request)
     {
-        // return $request->all();
+        $data = $request->all();
         $this->validate($request, [
             'short_des' => 'required|string',
             'description' => 'required|string',
@@ -66,10 +66,7 @@ class AdminController extends Controller
             'email' => 'required|email',
             'phone' => 'required|string',
         ]);
-        $data = $request->all();
-        // return $data;
         $settings = Settings::first();
-        // return $settings;
         $status = $settings->fill($data)->save();
         if ($status) {
             request()->session()->flash('success', 'Cập nhật cài đặt thành công!');

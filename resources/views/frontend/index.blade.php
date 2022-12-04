@@ -117,7 +117,7 @@
                                                 <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                                 <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                                 @if($product->stock<=0)
-                                                    <span class="out-of-stock">Đang Sale</span>
+                                                    <span class="out-of-stock">Hết hàng</span>
                                                 @elseif($product->condition=='new')
                                                     <span class="new">Mới</span
                                                 @elseif($product->condition=='hot')
@@ -125,13 +125,11 @@
                                                 @else
                                                     <span class="price-dec">{{$product->discount}}% Off</span>
                                                 @endif
-
-
                                             </a>
                                             <div class="button-head">
                                                 <div class="product-action">
-                                                    <a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                                    <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" ><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
+                                                    <a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Xem nhanh</span></a>
+                                                    <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" ><i class=" ti-heart "></i><span>Thêm vào mục yêu thích</span></a>
                                                 </div>
                                                 <div class="product-action-2">
                                                     <a title="Thêm giỏ hàng" href="{{route('add-to-cart',$product->slug)}}">Thêm giỏ hàng</a>
@@ -267,9 +265,9 @@
                 </div>
                 <div class="row">
                     @php
-                        $product_lists=DB::table('products')->where('status','active')->orderBy('id','DESC')->limit(6)->get();
+                        $product_lists_update=DB::table('products')->where('status','active')->orderBy('id','DESC')->limit(6)->get();
                     @endphp
-                    @foreach($product_lists as $product)
+                    @foreach($product_lists_update as $product)
                         <div class="col-md-4">
                             <!-- Start Single List  -->
                             <div class="single-list">
@@ -385,6 +383,7 @@
 
 <!-- Modal -->
 @if($product_lists)
+
     @foreach($product_lists as $key=>$product)
         <div class="modal fade" id="{{$product->id}}" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -451,35 +450,32 @@
                                         <div class="quickview-peragraph">
                                             <p>{!! html_entity_decode($product->summary) !!}</p>
                                         </div>
-                                        @if($product->size)
-                                            <div class="size">
-                                                <div class="row">
-                                                    <div class="col-lg-6 col-12">
-                                                        <h5 class="title">Size</h5>
-                                                        <select>
-                                                            @php
-                                                            $sizes=explode(',',$product->size);
-                                                            // dd($sizes);
-                                                            @endphp
-                                                            @foreach($sizes as $size)
-                                                                <option>{{$size}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    {{-- <div class="col-lg-6 col-12">
-                                                        <h5 class="title">Color</h5>
-                                                        <select>
-                                                            <option selected="selected">orange</option>
-                                                            <option>purple</option>
-                                                            <option>black</option>
-                                                            <option>pink</option>
-                                                        </select>
-                                                    </div> --}}
-                                                </div>
-                                            </div>
-                                        @endif
+
                                         <form action="{{route('single-add-to-cart')}}" method="POST" class="mt-4">
                                             @csrf
+                                            @if($product->size)
+                                                <div class="size">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-12">
+                                                            <h5 class="title">Size</h5>
+                                                            <select name="size_product">
+                                                                @php
+                                                                    $sizes=explode(',',$product->size);
+                                                                    // dd($sizes);
+                                                                @endphp
+                                                                @foreach($sizes as $size)
+                                                                    <option @if(strtoupper(trim($size)) == 'S') value="1"
+                                                                            @elseif(strtoupper(trim($size)) == 'M') value="2"
+                                                                            @elseif(strtoupper(trim($size)) == 'L') value="3"
+                                                                            @elseif(strtoupper(trim($size)) == 'XL') value="4"
+                                                                        @endif
+                                                                    >{{strtoupper($size)}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
                                             <div class="quantity">
                                                 <!-- Input Order -->
                                                 <div class="input-group">

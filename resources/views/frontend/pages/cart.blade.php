@@ -29,6 +29,7 @@
 							<tr class="main-hading" style="background-color: #333">
 								<th>SẢN PHẨM</th>
 								<th>TÊN</th>
+                                <th>Size</th>
 								<th class="text-center">ĐƠN GIÁ</th>
 								<th class="text-center">SỐ LƯỢNG</th>
 								<th class="text-center">TỔNG</th>
@@ -49,7 +50,21 @@
 												<p class="product-name"><a href="{{route('product-detail',$cart->product['slug'])}}" target="_blank">{{$cart->product['title']}}</a></p>
 												<p class="product-des">{!!($cart['summary']) !!}</p>
 											</td>
-											<td class="price" data-title="Price"><span>{{number_format($cart['price'],0)}} vnđ</span></td>
+                                            <td class="price" data-title="Price">
+                                                <span>
+                                                    @if(@$cart['size_product'] == 1)
+                                                        S
+                                                    @elseif(@$cart['size_product'] == 2)
+                                                        M
+                                                    @elseif(@$cart['size_product'] == 3)
+                                                        L
+                                                    @elseif(@$cart['size_product'] == 4)
+                                                        XL
+                                                    @endif
+                                                </span>
+                                            </td>
+
+                                            <td class="price" data-title="Price"><span>{{number_format($cart['price'],0)}} vnđ</span></td>
 											<td class="qty" data-title="Qty"><!-- Input Order -->
 												<div class="input-group">
 													<div class="button minus">
@@ -67,7 +82,7 @@
 												</div>
 												<!--/ End Input Order -->
 											</td>
-											<td class="total-amount cart_single_price" data-title="Total"><span class="money">{{number_format($cart['amount'],0)}} vnđ</span></td> 
+											<td class="total-amount cart_single_price" data-title="Total"><span class="money">{{number_format($cart['amount'],0)}} vnđ</span></td>
 
 											<td class="action" data-title="Remove"><a href="{{route('cart-delete',$cart->id)}}"><i class="ti-trash remove-icon"></i></a></td>
 										</tr>
