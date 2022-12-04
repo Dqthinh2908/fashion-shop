@@ -17,9 +17,9 @@
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>STT</th>
               <th>Số đơn hàng</th>
-              <th>Tên</th>
+              <th>Tên khách hàng</th>
               <th>Email</th>
               <th>Số lượng</th>
               <th>Tổng tiền</th>
@@ -28,9 +28,12 @@
             </tr>
           </thead>
           <tbody>
+          @php
+              $i  = 1;
+          @endphp
             @foreach($orders as $order)
                 <tr>
-                    <td>{{$order->id}}</td>
+                    <td>{{$i++}}</td>
                     <td>{{$order->order_number}}</td>
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>
@@ -39,13 +42,13 @@
                     <td>{{number_format($order->total_amount,0)}} vnđ</td>
                     <td>
                         @if($order->status=='new')
-                          <span class="badge badge-primary">{{$order->status}}</span>
+                            <span class="badge badge-primary">Đơn hàng mới</span>
                         @elseif($order->status=='process')
-                          <span class="badge badge-warning">{{$order->status}}</span>
+                            <span class="badge badge-warning">Đang giao hàng</span>
                         @elseif($order->status=='delivered')
-                          <span class="badge badge-success">{{$order->status}}</span>
+                            <span class="badge badge-success">Đã giao hàng</span>
                         @else
-                          <span class="badge badge-danger">{{$order->status}}</span>
+                            <span class="badge badge-danger">Đơn hàng đã bị hủy</span>
                         @endif
                     </td>
                     <td>

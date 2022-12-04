@@ -17,7 +17,7 @@
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>STT</th>
               <th>Mã đơn hàng</th>
               <th>Tên</th>
               <th>Email</th>
@@ -29,12 +29,15 @@
             </tr>
           </thead>
           <tbody>
+          @php
+              $i  = 1;
+          @endphp
             @foreach($orders as $order)
             @php
                 $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
             @endphp
                 <tr>
-                    <td>{{$order->id}}</td>
+                    <td>{{$i++}}</td>
                     <td>{{$order->order_number}}</td>
                     <td>{{$order->first_name}} {{$order->last_name}}</td>
                     <td>{{$order->email}}</td>

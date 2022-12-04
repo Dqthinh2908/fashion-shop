@@ -41,13 +41,13 @@
                     <td>{{number_format($order->total_amount,0)}} vnđ</td>
                     <td>
                         @if($order->status=='new')
-                          <span class="badge badge-primary">{{$order->status}}</span>
+                            <span class="badge badge-primary">Đơn hàng mới</span>
                         @elseif($order->status=='process')
-                          <span class="badge badge-warning">{{$order->status}}</span>
+                            <span class="badge badge-warning">Đang giao hàng</span>
                         @elseif($order->status=='delivered')
-                          <span class="badge badge-success">{{$order->status}}</span>
+                            <span class="badge badge-success">Đã giao hàng</span>
                         @else
-                          <span class="badge badge-danger">{{$order->status}}</span>
+                            <span class="badge badge-danger">Đơn hàng đã bị hủy</span>
                         @endif
                     </td>
                     <td>

@@ -271,7 +271,6 @@
               })
               .catch(function (error) {
               //   vm.answer = 'Error! Could not reach the API. ' + error
-              console.log(error)
               });
 
   </script>

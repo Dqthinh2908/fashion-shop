@@ -84,7 +84,7 @@ class HomeController extends Controller
 
     public function orderShow($id)
     {
-        $order = Order::find($id);
+        $order =  Order::getAllOrder($id);
         // return $order;
         return view('user.order.show')->with('order', $order);
     }

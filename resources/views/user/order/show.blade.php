@@ -21,14 +21,13 @@
       <thead>
         <tr>
             <th>ID</th>
-            <th>Số đơn hàng</th>
-            <th>Tên</th>
+            <th>Mã đơn hàng</th>
+            <th>Tên khách hàng</th>
             <th>Email</th>
-            <th>Số lượng</th>
+            <th>Tổng số lượng</th>
             <!-- <th>Phí vận chuyển</th> -->
             <th>Tổng tiền</th>
             <th>Trạng thái</th>
-            <th>Hành động</th>
         </tr>
       </thead>
       <tbody>
@@ -42,22 +41,16 @@
             <td>{{number_format($order->total_amount,0)}} vnđ</td>
             <td>
                 @if($order->status=='new')
-                  <span class="badge badge-primary">{{$order->status}}</span>
+                    <span class="badge badge-primary">Đơn hàng mới</span>
                 @elseif($order->status=='process')
-                  <span class="badge badge-warning">{{$order->status}}</span>
+                    <span class="badge badge-warning">Đang giao hàng</span>
                 @elseif($order->status=='delivered')
-                  <span class="badge badge-success">{{$order->status}}</span>
+                    <span class="badge badge-success">Đã giao hàng</span>
                 @else
-                  <span class="badge badge-danger">{{$order->status}}</span>
+                    <span class="badge badge-danger">Đơn hàng đã bị hủy</span>
                 @endif
             </td>
-            <td>
-                <form method="POST" action="{{route('order.destroy',[$order->id])}}">
-                  @csrf
-                  @method('delete')
-                      <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                </form>
-            </td>
+
 
         </tr>
       </tbody>
@@ -66,26 +59,24 @@
     <section class="confirmation_part section_padding">
       <div class="order_boxes">
         <div class="row">
-          <div class="col-lg-6 col-lx-4">
+          <div class="col-lg-4 col-lx-4">
             <div class="order-info">
               <h4 class="text-center pb-4">THÔNG TIN ĐƠN HÀNG</h4>
               <table class="table">
                     <tr class="">
-                        <td>Số đơn hàng</td>
+                        <td>Mã đơn hàng</td>
                         <td> : {{$order->order_number}}</td>
                     </tr>
                     <tr>
                         <td>Ngày đặt hàng</td>
-                        <td> : {{$order->created_at->format('D d M, Y')}} lúc {{$order->created_at->format('g : i a')}} </td>
+                        <td> : {{$order->created_at->format('d/m/Y')}} lúc {{$order->created_at->format('H:i')}} </td>
                     </tr>
+
                     <tr>
-                        <td>Số lượng</td>
+                        <td>Tổng số lượng</td>
                         <td> : {{$order->quantity}}</td>
                     </tr>
-                    <tr>
-                        <td>Trạng thái đơn hàng</td>
-                        <td> : {{$order->status}}</td>
-                    </tr>
+
                     <!-- <tr>
                       @php
                           $shipping_charge=DB::table('shippings')->where('id',$order->shipping_id)->pluck('price');
@@ -108,8 +99,32 @@
               </table>
             </div>
           </div>
+            <div class="col-lg-4 col-lx-4">
+                <div class="order-info">
+                    <h4 class="text-center pb-4">Chi tiết sản phẩm</h4>
+                    <table class="table">
+                        @if(@$order->cart_info->isNotEmpty())
+                            @foreach(@$order->cart_info as $cart_info_item)
+                                <tr>
+                                    <td>Tên sản phẩm:</td>
+                                    <td>{{@$cart_info_item->product->title}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Số lượng:</td>
+                                    <td>{{@$cart_info_item->quantity}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Đơn giá</td>
+                                    <td>{{@$cart_info_item->price}}</td>
+                                </tr>
+                            @endforeach
+                        @endif
 
-          <div class="col-lg-6 col-lx-4">
+                    </table>
+                </div>
+            </div>
+
+          <div class="col-lg-4 col-lx-4">
             <div class="shipping-info">
               <h4 class="text-center pb-4">THÔNG TIN VẬN CHUYỂN</h4>
               <table class="table">

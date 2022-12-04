@@ -18,7 +18,7 @@
         <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>STT</th>
               <th>Tiêu đề</th>
               <th>Danh mục</th>
               <th>Là danh mục cha?</th>
@@ -34,7 +34,7 @@
             </tr>
           </thead>
           <tbody>
-
+            <?php $i = 1 ?>
             @foreach($products as $product)
               @php
               $sub_cat_info=DB::table('categories')->select('title')->where('id',$product->child_cat_id)->get();
@@ -42,7 +42,7 @@
               $brands=DB::table('brands')->select('title')->where('id',$product->brand_id)->get();
               @endphp
                 <tr>
-                    <td>{{$product->id}}</td>
+                    <td>{{$i++}}</td>
                     <td>{{$product->title}}</td>
                     <td>{{$product->cat_info['title']}}
                       <sub>

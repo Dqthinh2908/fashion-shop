@@ -63,7 +63,6 @@ class CartController extends Controller
 
     public function singleAddToCart(Request $request)
     {
-
         $request->validate([
             'slug'      =>  'required',
             'quant'      =>  'required',
@@ -83,7 +82,7 @@ class CartController extends Controller
             return back();
         }
 
-        $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->where('product_id', $product->id)->first();
+        $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->where('product_id', $product->id)->where('size_product',@$request->size_product)->first();
         // return $already_cart;
         if ($already_cart) {
             $already_cart->quantity = $already_cart->quantity + $request->quant[1];

@@ -14,7 +14,7 @@ class Order extends Model
     }
     public static function getAllOrder($id)
     {
-        return Order::with('cart_info')->find($id);
+        return Order::with('cart_info.product')->find($id);
     }
     public static function countActiveOrder()
     {

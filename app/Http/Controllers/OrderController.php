@@ -22,7 +22,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::orderBy('id', 'DESC')->paginate(10);
+        $orders = Order::orderBy('created_at', 'DESC')->paginate(10);
         return view('backend.order.index')->with('orders', $orders);
     }
 
@@ -126,7 +126,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = Order::find($id);
+        $order = Order::getAllOrder($id);
         // return $order;
         return view('backend.order.show')->with('order', $order);
     }
@@ -246,7 +246,6 @@ class OrderController extends Controller
             ->groupBy(function ($d) {
                 return \Carbon\Carbon::parse($d->created_at)->format('m');
             });
-        // dd($items);
         $result = [];
         foreach ($items as $month => $item_collections) {
             foreach ($item_collections as $item) {

@@ -17,7 +17,7 @@
         <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>STT</th>
               <th>Tiêu đề</th>
               <th>Tóm tắt</th>
               <th>Là danh mục cha?</th>
@@ -28,12 +28,13 @@
             </tr>
           </thead>
           <tbody>
-
-            @foreach($categories as $category)
-              @php
+          @php
+            $i = 1;
               @endphp
+            @foreach($categories as $category)
+
                 <tr>
-                    <td>{{$category->id}}</td>
+                    <td>{{$i++}}</td>
                     <td>{{$category->title}}</td>
                     <td>{{$category->slug}}</td>
                     <td>{{(($category->is_parent==1)? 'Có': 'Không')}}</td>
