@@ -113,9 +113,22 @@
                                     <td>Số lượng:</td>
                                     <td>{{@$cart_info_item->quantity}}</td>
                                 </tr>
+                                @if(isset($cart_info_item->size_product))
+                                    <tr>
+                                        <td>Size:</td>
+                                        <td>{{Helper::getSizeProduct($cart_info_item->size_product)}}</td>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <td>Đơn giá</td>
-                                    <td>{{@$cart_info_item->price}}</td>
+                                    <td>{{number_format(@$cart_info_item->price) . ' đ'}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tổng tiền/ sản phẩm</td>
+                                    <td>{{number_format(@$cart_info_item->amount) . ' đ'}}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
                                 </tr>
                             @endforeach
                         @endif

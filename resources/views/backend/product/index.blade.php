@@ -131,13 +131,12 @@
   <script>
 
       $('#product-dataTable').DataTable( {
-        "scrollX": false
-            "columnDefs":[
-                {
-                    "orderable":false,
-                    "targets":[10,11,12]
-                }
-            ]
+          "columnDefs":[
+              {
+                  "orderable":true,
+                  "targets":[10]
+              }
+          ]
         } );
 
         // Sweet alert
@@ -159,12 +158,13 @@
             // alert(dataID);
             e.preventDefault();
             swal({
-                  title: "Bạn chắc chưa?",
+                  title: "Bạn có muốn xóa sản phẩm?",
                   text: "Nếu bạn xóa, không thể phục hồi lại dữ liệu!",
                   icon: "warning",
-                  buttons: true,
                   dangerMode: true,
-              })
+                buttons: true,
+
+            })
               .then((willDelete) => {
                   if (willDelete) {
                      form.submit();

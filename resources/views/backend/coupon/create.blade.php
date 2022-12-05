@@ -16,10 +16,10 @@
         </div>
 
         <div class="form-group">
-            <label for="type" class="col-form-label">Kiểu <span class="text-danger">*</span></label>
+            <label for="type" class="col-form-label">Loại giảm giá <span class="text-danger">*</span></label>
             <select name="type" class="form-control">
-                <option value="fixed">Tiền</option>
-                <option value="percent">%</option>
+                <option value="fixed">Giá tiền</option>
+                <option value="percent">Số %</option>
             </select>
             @error('type')
             <span class="text-danger">{{$message}}</span>
@@ -33,7 +33,7 @@
             <span class="text-danger">{{$message}}</span>
             @enderror
         </div>
-        
+
         <div class="form-group">
           <label for="status" class="col-form-label">Trạng thái <span class="text-danger">*</span></label>
           <select name="status" class="form-control">

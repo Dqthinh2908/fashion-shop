@@ -24,8 +24,11 @@ class AdminController extends Controller
         foreach ($data as $key => $value) {
             $array[++$key] = [$value->day_name, $value->count];
         }
+        $total_product_order = Order::getAllProductOrder();
+        $data_items = $this->tranformProductOrder($total_product_order);
+        $count_product_sold = Order::getProductsSold();
         //  return $data;
-        return view('backend.index')->with('users', json_encode($array));
+        return view('backend.index')->with(['users' => json_encode($array),'data_items'=>$data_items,'count_product_sold'=>$count_product_sold]);
     }
 
     public function profile()
@@ -110,4 +113,32 @@ class AdminController extends Controller
         //  return $data;
         return view('backend.index')->with('course', json_encode($array));
     }
+    public function tranformProductOrder($total_product_order)
+    {
+        $data_array = array();
+        $sum_quantity = 0;
+        $sum_amount = 0;
+        $i  = 0;
+
+        foreach ($total_product_order as $key => $value)
+        {
+            foreach ($value as $data)
+            {
+                $i++;
+                $sum_quantity += $data->quantity;
+                $sum_amount += $data->amount;
+                $name_product = $data->product->title;
+            }
+            $data_array[$key]['quantity'] = $sum_quantity;
+            $data_array[$key]['amount'] = $sum_amount;
+            $data_array[$key]['name_product'] = $name_product;
+            if($i == count($value))
+            {
+                $sum_quantity = 0;
+                $sum_amount = 0;
+            }
+        }
+        return $data_array;
+    }
+
 }

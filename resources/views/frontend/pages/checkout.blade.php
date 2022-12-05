@@ -126,7 +126,6 @@
                                                 <p style="color:red">* Phí vận chuyển</p>
                                                 @if(count(Helper::shipping())>0 && Helper::cartCount()>0)
                                                     <select name="shipping" class="nice-select" required>
-                                                        <option value="" required>Chọn cách thức vận chuyển</option>
                                                         @foreach(Helper::shipping() as $shipping)
                                                         <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}" required>{{$shipping->type}}: {{$shipping->price}} vnđ</option>
                                                         @endforeach

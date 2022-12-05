@@ -27,7 +27,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($coupons as $coupon)   
+            @foreach($coupons as $coupon)
                 <tr>
                     <td>{{$coupon->id}}</td>
                     <td>{{$coupon->code}}</td>
@@ -54,13 +54,13 @@
                     <td>
                         <a href="{{route('coupon.edit',$coupon->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="Sửa" data-placement="bottom"><i class="fas fa-edit"></i></a>
                         <form method="POST" action="{{route('coupon.destroy',[$coupon->id])}}">
-                          @csrf 
+                          @csrf
                           @method('delete')
                               <button class="btn btn-danger btn-sm dltBtn" data-id={{$coupon->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Xóa"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
-                    
-                </tr>  
+
+                </tr>
             @endforeach
           </tbody>
         </table>
@@ -100,7 +100,7 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
-      
+
       $('#banner-dataTable').DataTable( {
             "columnDefs":[
                 {
@@ -113,7 +113,7 @@
         // Sweet alert
 
         function deleteData(id){
-            
+
         }
   </script>
   <script>
@@ -129,7 +129,7 @@
             // alert(dataID);
             e.preventDefault();
             swal({
-                  title: "Bạn chắc chưa?",
+                  title: "Bạn có muốn xóa dữ liệu?",
                   text: "Nếu bạn xóa, không thể phục hồi lại dữ liệu!",
                   icon: "warning",
                   buttons: true,

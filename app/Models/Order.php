@@ -37,4 +37,36 @@ class Order extends Model
     {
         return $this->belongsTo('App\User', 'user_id');
     }
+    public static function getAllProductOrder()
+    {
+        $data = Order::with('cart_info.product')->orderBy('created_at','DESC')->get();
+        $data_items = collect();
+        if($data->isNotEmpty())
+        {
+            foreach ($data as  $value)
+            {
+                if($value->cart_info->isNotEmpty())
+                {
+                    $data_items->push($value->cart_info);
+                }
+            }
+        }
+        return $data_items->flatten()->groupBy('product_id');
+    }
+    public static function getProductsSold()
+    {
+        $data = Order::with('cart_info.product')->get();
+        $data_items = collect();
+        if($data->isNotEmpty())
+        {
+            foreach ($data as  $value)
+            {
+                if($value->cart_info->isNotEmpty())
+                {
+                    $data_items->push($value->cart_info);
+                }
+            }
+        }
+        return array_sum($data_items->flatten()->pluck('quantity')->toArray()) ?? '';
+    }
 }

@@ -156,7 +156,6 @@ class Helper
     public static function grandPrice($id, $user_id)
     {
         $order = Order::find($id);
-        dd($id);
         if ($order) {
             $shipping_price = (float)$order->shipping->price;
             $order_price = self::orderPrice($id, $user_id);
@@ -165,7 +164,6 @@ class Helper
             return 0;
         }
     }
-
 
     // Admin home
     public static function earningPerMonth()
@@ -183,6 +181,13 @@ class Helper
     {
         return Shipping::orderBy('id', 'DESC')->get();
     }
+
+    public static function getSizeProduct($size_code)
+    {
+        $all_size = Config('size_product');
+        return $all_size[$size_code] ?? '';
+    }
+
 }
 
 ?>

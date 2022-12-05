@@ -120,6 +120,43 @@
     <!-- Content Row -->
 
   </div>
+    <div class="row">
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Sản phẩm đã bán</h6>
+                </div>
+                <?php $i = 1 ?>
+                <table class="table table-striped">
+                    <tr>
+                        <td style="text-align: center">#</td>
+                        <td>Tên sản phẩm</td>
+                        <td style="text-align: center">Số lượng</td>
+                        <td style="text-align: center">Tổng tiền</td>
+                    </tr>
+                    @if(!empty($data_items))
+                        @foreach($data_items as $data_item)
+                            <tr>
+                                <td style="text-align: center">{{$i++}}</td>
+                                <td>{{@$data_item['name_product']}}</td>
+                                <td style="text-align: center">{{@$data_item['quantity']}}</td>
+                                <td style="text-align: center">{{number_format(@$data_item['amount']).' đ'}}</td>
+
+                            </tr>
+                        @endforeach
+                    @else
+                    <tr>
+                        <td colspan="4">Chưa có sản phẩm</td>
+                    </tr>
+                    @endif
+                </table>
+
+                <!-- Card Body -->
+
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')

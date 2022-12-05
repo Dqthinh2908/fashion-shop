@@ -63,6 +63,7 @@ class CartController extends Controller
 
     public function singleAddToCart(Request $request)
     {
+
         $request->validate([
             'slug'      =>  'required',
             'quant'      =>  'required',
@@ -100,7 +101,7 @@ class CartController extends Controller
             $cart->price = ($product->price - ($product->price * $product->discount) / 100);
             $cart->quantity = $request->quant[1];
             $cart->size_product = $request->size_product;
-            $cart->amount = ($product->price * $request->quant[1]);
+            $cart->amount = (($product->price - ($product->price * $product->discount) / 100) * $request->quant[1]);
             if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error', 'Hàng không đủ!');
             // return $cart;
             $cart->save();
@@ -163,6 +164,10 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
+        if (empty(Cart::where('user_id', auth()->user()->id)->where('order_id', null)->first())) {
+            request()->session()->flash('error', 'Giỏ hàng trống!');
+            return back();
+        }
         $user_profile = '';
         $country_items = Config('country') ?? '';
         if(Auth::check())

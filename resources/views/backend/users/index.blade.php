@@ -28,7 +28,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($users as $user)   
+            @foreach($users as $user)
                 <tr>
                     <td>{{$user->id}}</td>
                     <td>{{$user->name}}</td>
@@ -52,13 +52,13 @@
                     <td>
                         <a href="{{route('users.edit',$user->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="edit" data-placement="bottom"><i class="fas fa-edit"></i></a>
                     <form method="POST" action="{{route('users.destroy',[$user->id])}}">
-                      @csrf 
+                      @csrf
                       @method('delete')
                           <button class="btn btn-danger btn-sm dltBtn" data-id={{$user->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
-                   
-                </tr>  
+
+                </tr>
             @endforeach
           </tbody>
         </table>
@@ -88,7 +88,7 @@
   <!-- Page level custom scripts -->
   <script src="{{asset('backend/js/demo/datatables-demo.js')}}"></script>
   <script>
-      
+
       $('#user-dataTable').DataTable( {
             "columnDefs":[
                 {
@@ -101,7 +101,7 @@
         // Sweet alert
 
         function deleteData(id){
-            
+
         }
   </script>
   <script>
@@ -117,7 +117,7 @@
             // alert(dataID);
             e.preventDefault();
             swal({
-                  title: "Bạn chắc chưa?",
+                  title: "Bạn có muốn xóa dữ liệu?",
                   text: "Nếu bạn xóa, không thể phục hồi lại dữ liệu!",
                   icon: "warning",
                   buttons: true,

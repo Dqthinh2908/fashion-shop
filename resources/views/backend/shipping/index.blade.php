@@ -117,7 +117,7 @@
             // alert(dataID);
             e.preventDefault();
             swal({
-                  title: "Bạn chắc chưa?",
+                  title: "Bạn có muốn xóa dữ liệu?",
                   text: "Nếu bạn xóa, không thể phục hồi lại dữ liệu!",
                   icon: "warning",
                   buttons: true,
