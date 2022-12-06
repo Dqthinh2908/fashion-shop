@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Role;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -39,5 +40,9 @@ class User extends Authenticatable
 
     public function orders(){
         return $this->hasMany('App\Models\Order');
+    }
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class,'user_role','user_id','role_id');
     }
 }

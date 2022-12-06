@@ -127,7 +127,7 @@
             <i class="fas fa-comments"></i>
             <span>Đánh giá</span></a>
     </li>
-    
+
 
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -189,6 +189,22 @@
             <span>Bình luận</span>
         </a>
       </li>
+    <div class="sidebar-heading">
+        Phân Quyền
+    </div>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#roles" aria-expanded="true" aria-controls="postCollapse">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Vai trò</span>
+        </a>
+        <div id="roles" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Tùy chọn vai trò:</h6>
+                <a class="collapse-item" href="{{route('showRoles')}}">Danh sách vai trò</a>
+                <a class="collapse-item" href="{{route('post.create')}}">Thêm bài viết</a>
+            </div>
+        </div>
+    </li>
 
 
     <!-- Divider -->

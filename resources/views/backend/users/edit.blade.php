@@ -1,12 +1,20 @@
 @extends('backend.layouts.master')
-
+@push('styles')
+    <style>
+        .select2-selection__choice__display{
+            background-color:#0c525d !important;
+            color:#fff !important;
+        }
+    </style>
+@endpush
 @section('main-content')
+
 
 <div class="card">
     <h5 class="card-header">Sửa người dùng</h5>
     <div class="card-body">
       <form method="post" action="{{route('users.update',$user->id)}}">
-        @csrf 
+        @csrf
         @method('PATCH')
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Tên</label>
@@ -39,17 +47,12 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        @php 
-        $roles=DB::table('users')->select('role')->where('id',$user->id)->get();
-        // dd($roles);
-        @endphp
+
         <div class="form-group">
-            <label for="role" class="col-form-label">Phân quyền</label>
-            <select name="role" class="form-control">
-                <option value="">-----Chọn phân quyền-----</option>
+            <label>Chọn vai trò</label>
+            <select class="form-control select2_init" name="role_id[]" multiple>
                 @foreach($roles as $role)
-                    <option value="{{$role->role}}" {{(($role->role=='admin') ? 'selected' : '')}}>Admin</option>
-                    <option value="{{$role->role}}" {{(($role->role=='user') ? 'selected' : '')}}>Người dùng</option>
+                    <option {{ $rolesOfUser->contains('id',$role->id) ? 'selected' : ''}} value="{{ $role->id }}">{{$role->name }}</option>
                 @endforeach
             </select>
           @error('role')
@@ -79,5 +82,8 @@
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 <script>
     $('#lfm').filemanager('image');
+    $('.select2_init').select2({
+        'placeholder': 'Chọn vai trò'
+    });
 </script>
 @endpush

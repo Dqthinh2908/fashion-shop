@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
+use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
 {
+    protected $user;
+    protected $role;
+    public function __construct(User $user, Role $role)
+    {
+        $this->user = $user;
+        $this->role = $role;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +36,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('backend.users.create');
+        $roles = $this->role->all();
+        return view('backend.users.create',compact('roles'));
     }
 
     /**
@@ -44,23 +54,39 @@ class UsersController extends Controller
                 'name' => 'string|required|max:30',
                 'email' => 'string|required|unique:users',
                 'password' => 'string|required',
-                'role' => 'required|in:admin,user',
                 'status' => 'required|in:active,inactive',
                 'photo' => 'nullable|string',
             ]
         );
-        // dd($request->all());
         $data = $request->all();
-        $data['password'] = Hash::make($request->password);
-        // dd($data);
-        $status = User::create($data);
-        // dd($status);
-        if ($status) {
-            request()->session()->flash('success', 'Đã thêm người dùng thành công');
-        } else {
-            request()->session()->flash('error', 'Đã xảy ra lỗi khi thêm người dùng');
+        $dataInsert = [
+            'name' => $request->name,
+            'email'=>$request->email,
+            'password'=>bcrypt($request->password),
+            'status'=>$request->status,
+            'photo'=>$request->photo,
+            'role'=>'admin'
+        ];
+        try {
+            DB::beginTransaction();
+            $user = User::create($dataInsert);
+            $roleIds = $request->role_id;
+            $user->roles()->attach($roleIds);
+            DB::commit();
+            if ($user) {
+                request()->session()->flash('success', 'Đã thêm người dùng thành công');
+            } else {
+                request()->session()->flash('error', 'Đã xảy ra lỗi khi thêm người dùng');
+            }
+            return redirect()->route('users.index');
+
+
+        }catch (\Exception $exception)
+        {
+            Log::error('Message :'. $exception->getMessage() . '--- Line' . $exception->getLine());
+
         }
-        return redirect()->route('users.index');
+
     }
 
     /**
@@ -82,8 +108,11 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return view('backend.users.edit')->with('user', $user);
+        $roles = $this->role->all();
+        // dd($roles);
+        $user = $this->user->find($id);
+        $rolesOfUser = $user->roles;
+        return view('backend.users.edit',compact('roles','user','rolesOfUser'));
     }
 
     /**
@@ -95,28 +124,38 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
         $this->validate(
             $request,
             [
                 'name' => 'string|required|max:30',
                 'email' => 'string|required',
-                'role' => 'required|in:admin,user',
                 'status' => 'required|in:active,inactive',
                 'photo' => 'nullable|string',
             ]
         );
-        // dd($request->all());
-        $data = $request->all();
-        // dd($data);
+        try {
+            DB::beginTransaction();
+            $this->user->find($id)->update([
+                'name' => $request->name,
+                'email'=>$request->email,
+                'status'=>$request->status,
+                'photo'=>$request->photo,
+            ]);
+            $user = $this->user->find($id);
+            $user->roles()->sync($request->role_id);
+            DB::commit();
+            if ($user) {
+                request()->session()->flash('success', 'Đã thêm người dùng thành công');
+            } else {
+                request()->session()->flash('error', 'Đã xảy ra lỗi khi thêm người dùng');
+            }
+            return redirect()->route('users.index');
+        }catch (\Exception $exception)
+        {
+            Log::error('Message :'. $exception->getMessage() . '--- Line' . $exception->getLine());
 
-        $status = $user->fill($data)->save();
-        if ($status) {
-            request()->session()->flash('success', 'Cập nhật thành công!');
-        } else {
-            request()->session()->flash('error', 'Đã xảy ra lỗi khi cập nhật');
         }
-        return redirect()->route('users.index');
+
     }
 
     /**

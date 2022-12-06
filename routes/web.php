@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use  App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +143,17 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     // Password Change
     Route::get('change-password', 'AdminController@changePassword')->name('change.password.form');
     Route::post('change-password', 'AdminController@changPasswordStore')->name('change.password');
+
+    //Roles
+    route::get('showRoles',[RoleController::class,'index'])->name('showRoles');
+    route::get('showAddRoles',[RoleController::class,'showAddRoles'])->name('showAddRoles');
+    route::post('handleAddRoles',[RoleController::class,'handleAddRoles'])->name('handleAddRoles');
+    route::get('showEditRoles/{id}',[RoleController::class,'showEditRoles'])->name('showEditRoles');
+    route::post('handleEditRoles/{id}',[RoleController::class,'handleEditRoles'])->name('handleEditRoles');
+    route::get('handleDeleteRoles/{id}',[RoleController::class,'handleDeleteRoles'])->name('handleDeleteRoles');
+    route::get('showTrashRole',[RoleController::class,'showTrashRole'])->name('showTrashRole');
+    route::get('handleRoleRestore/{id}',[RoleController::class,'handleRoleRestore'])->name('handleRoleRestore');
+    route::get('handleRoleForce/{id}',[RoleController::class,'handleRoleForce'])->name('handleRoleForce');
 });
 
 

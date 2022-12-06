@@ -1,7 +1,14 @@
 @extends('backend.layouts.master')
 
 @section('main-content')
-
+    @push('styles')
+    <style>
+        .select2-selection__choice__display{
+            background-color:#0c525d !important;
+            color:#fff !important;
+        }
+    </style>
+    @endpush
 <div class="card">
     <h5 class="card-header">Thêm người dùng</h5>
     <div class="card-body">
@@ -46,15 +53,11 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        @php
-        $roles=DB::table('users')->select('role')->get();
-        @endphp
         <div class="form-group">
-            <label for="role" class="col-form-label">Phân quyền</label>
-            <select name="role" class="form-control">
-                <option value="">-----Chọn phân quyền-----</option>
+            <label>Chọn vai trò</label>
+            <select name="role_id[]" class="form-control select2_init" multiple>
                 @foreach($roles as $role)
-                    <option value="{{$role->role}}">{{$role->role}}</option>
+                    <option value="{{$role->id}}">{{$role->name}}</option>
                 @endforeach
             </select>
           @error('role')
@@ -85,5 +88,8 @@
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 <script>
     $('#lfm').filemanager('image');
+    $('.select2_init').select2({
+        'placeholder': 'Chọn vai trò'
+    });
 </script>
 @endpush
