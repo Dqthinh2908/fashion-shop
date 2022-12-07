@@ -1,5 +1,5 @@
-@extends('admin.layout-admin')
-@section('title','Thêm vai trò')
+@extends('backend.layouts.master')
+@section('title','Thêm mới vai trò')
 @push('stylesheets')
     <style>
         .card-header{
@@ -18,13 +18,13 @@
         })
     </script>
 @endpush
-@section('content')
-    <div class="container-fluid"> 
+@section('main-content')
+    <div class="container-fluid">
             <div class="row">
-                <form action="{{route('admin.handleAddRoles')}}" method="POST"  style="width:100%;">
+                <form action="{{route('handleAddRoles')}}" method="POST"  style="width:100%;">
                     @csrf
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <h1>Thêm vai trò mới</h1>
+                        <h5 class="card-header">Thêm mới vai trò</h5>
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -41,7 +41,7 @@
                         <div class="mb-3">
                             <label for="titleNews" class="form-label">Miêu tả vai trò</label>
                             <textarea name="display_name" class="form-control" row="4"></textarea>
-                        </div>         
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="row">
@@ -51,7 +51,7 @@
                                     checkall
                                 </label>
                             </div>
-                           @foreach($permissionsParent as $key => $value) 
+                           @foreach($permissionsParent as $key => $value)
                             <div class="card border-primary mb-3 col-md-12" >
                                 <div class="card-header">
                                     <label for="">
@@ -69,15 +69,15 @@
                                             {{ $permissionChildrentItem->name }}
                                         </h5>
                                     </div>
-                                    @endforeach              
+                                    @endforeach
                                 </div>
                             </div>
-                            @endforeach                    
+                            @endforeach
                         </div>
-                        
+
                     </div>
                     <button type="submit" class="btn btn-primary">Thêm vai trò</button>
                 </form>
-            </div>         
+            </div>
     </div>
 @endsection

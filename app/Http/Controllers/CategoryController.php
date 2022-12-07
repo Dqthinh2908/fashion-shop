@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class CategoryController extends Controller
@@ -15,6 +16,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_categories'))
+        {
+            abort('403');
+        }
         $category = Category::getAllCategory();
         // return $category;
         return view('backend.category.index')->with('categories', $category);
@@ -27,6 +32,10 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_categories'))
+        {
+            abort('403');
+        }
         $parent_cats = Category::where('is_parent', 1)->orderBy('title', 'ASC')->get();
         return view('backend.category.create')->with('parent_cats', $parent_cats);
     }
@@ -85,6 +94,10 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_categories'))
+        {
+            abort('403');
+        }
         $parent_cats = Category::where('is_parent', 1)->get();
         $category = Category::findOrFail($id);
         return view('backend.category.edit')->with('category', $category)->with('parent_cats', $parent_cats);
@@ -129,6 +142,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_categories'))
+        {
+            abort('403');
+        }
         $category = Category::findOrFail($id);
         $child_cat_id = Category::where('parent_id', $id)->pluck('id');
         // return $child_cat_id;

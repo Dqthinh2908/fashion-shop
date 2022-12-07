@@ -154,6 +154,10 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     route::get('showTrashRole',[RoleController::class,'showTrashRole'])->name('showTrashRole');
     route::get('handleRoleRestore/{id}',[RoleController::class,'handleRoleRestore'])->name('handleRoleRestore');
     route::get('handleRoleForce/{id}',[RoleController::class,'handleRoleForce'])->name('handleRoleForce');
+
+    //Permisson
+        route::get('showPermissionRole',[\App\Http\Controllers\PermissionController::class,'showPermissionRole'])->name('showPermissionRole');
+        route::post('handleAddPermission',[\App\Http\Controllers\PermissionController::class,'handleAddPermission'])->name('handleAddPermission');
 });
 
 

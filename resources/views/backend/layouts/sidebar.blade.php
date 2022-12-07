@@ -201,7 +201,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Tùy chọn vai trò:</h6>
                 <a class="collapse-item" href="{{route('showRoles')}}">Danh sách vai trò</a>
-                <a class="collapse-item" href="{{route('post.create')}}">Thêm bài viết</a>
+                <a class="collapse-item" href="{{route('showAddRoles')}}">Thêm vai trò</a>
+                <a class="collapse-item" href="{{route('showPermissionRole')}}">Thêm phân quyền vai trò mới</a>
             </div>
         </div>
     </li>

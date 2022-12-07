@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -18,6 +19,10 @@ class ProductController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_products'))
+        {
+            abort('403');
+        }
         $products = Product::getAllProduct();
         // return $products;
         return view('backend.product.index')->with('products', $products);
@@ -30,6 +35,10 @@ class ProductController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_products'))
+        {
+            abort('403');
+        }
         $brand = Brand::get();
         $category = Category::where('is_parent', 1)->get();
         // return $category;
@@ -106,6 +115,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_products'))
+        {
+            abort('403');
+        }
         $brand = Brand::get();
         $product = Product::findOrFail($id);
         $category = Category::where('is_parent', 1)->get();
@@ -169,6 +182,10 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_products'))
+        {
+            abort('403');
+        }
         $product = Product::findOrFail($id);
         $status = $product->delete();
 

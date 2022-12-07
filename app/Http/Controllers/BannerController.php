@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Models\Banner;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class BannerController extends Controller
@@ -15,6 +17,10 @@ class BannerController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_banner'))
+        {
+            abort('403');
+        }
         $banner = Banner::orderBy('id', 'DESC')->paginate(10);
         return view('backend.banner.index')->with('banners', $banner);
     }
@@ -26,6 +32,10 @@ class BannerController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_banner'))
+        {
+            abort('403');
+        }
         return view('backend.banner.create');
     }
 
@@ -80,6 +90,10 @@ class BannerController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_banner'))
+        {
+            abort('403');
+        }
         $banner = Banner::findOrFail($id);
         return view('backend.banner.edit')->with('banner', $banner);
     }
@@ -119,6 +133,10 @@ class BannerController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_banner'))
+        {
+            abort('403');
+        }
         $banner = Banner::findOrFail($id);
         $status = $banner->delete();
         if ($status) {

@@ -9,7 +9,7 @@
         </div>
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary float-left">Danh sách vai trò</h6>
-            <a href="{{route('users.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Thêm người dùng"><i class="fas fa-plus"></i> Thêm vai trò</a>
+            <a href="{{route('showAddRoles')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Thêm vai trò"><i class="fas fa-plus"></i> Thêm vai trò</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">

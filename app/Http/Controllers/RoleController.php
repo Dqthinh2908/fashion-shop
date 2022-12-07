@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\Permission;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 class RoleController extends Controller
 {
     private $role;
@@ -22,18 +25,33 @@ class RoleController extends Controller
     public function showAddRoles()
     {
         $permissionsParent = $this->permission->where('parent_id',0)->get();
-        return view('admin/roles/addRoles',compact('permissionsParent'));
+        return view('backend.roles.addRoles',compact('permissionsParent'));
     }
     public function handleAddRoles(Request $request)
     {
-        $role = $this->role->create([
-            'name'=> $request->name,
-            'description'=>$request->display_name,
+        try {
+           DB::beginTransaction();
+            $role = $this->role->create([
+                'name'=> $request->name,
+                'description'=>$request->display_name,
+            ]);
+            $role->permissions()->attach($request->permission_id);
+            DB::commit();
+            if ($role) {
+                request()->session()->flash('success', 'Đã thêm vai trò thành công');
+            } else {
+                request()->session()->flash('error', 'Đã xảy ra lỗi khi thêm vai trò');
+            }
+            return redirect()->route('showRoles');
 
+        }catch (\Exception $exception)
+        {
+            Log::error('Message :'. $exception->getMessage() . '--- Line' . $exception->getLine());
+            request()->session()->flash('error', 'Đã xảy ra lỗi khi thêm vai trò');
+            return redirect()->route('showRoles');
 
-        ]);
-        $role->permissions()->attach($request->permission_id);
-        return redirect()->route('admin.showRoles')->with('msg','Thêm vai trò thành công')->with('type','success');
+        }
+
     }
     public function showEditRoles(Request $request,$id)
     {
@@ -41,7 +59,7 @@ class RoleController extends Controller
         $role = $this->role->find($id);
         $permissionsChecked = $role->permissions;
         // dd($permissionsChecked);
-        return view('admin/roles/editRoles',compact('permissionsParent','role','permissionsChecked'));
+        return view('backend.roles.editRoles',compact('permissionsParent','role','permissionsChecked'));
     }
     public function handleEditRoles(Request $request, $id)
     {
@@ -52,35 +70,43 @@ class RoleController extends Controller
         ]);
 
         $role->permissions()->sync($request->permission_id);
-        return redirect()->route('admin.showRoles')->with('msg','Cập nhật vai trò thành công')->with('type','success');
+        if ($role) {
+            request()->session()->flash('success', 'Cập nhật vai trò thành công');
+        } else {
+            request()->session()->flash('error', 'Đã xảy ra lỗi khi cập nhật vai trò');
+        }
+        return redirect()->route('showRoles');
     }
     public function handleDeleteRoles(Request $request, $id)
     {
-        $deleteRole = roles::destroy($id);
+        $deleteRole = Role::destroy($id);
         if($deleteRole)
         {
-            return redirect()->route('admin.showRoles')->with('msg','Vai trò đã được chuyển vào thùng rác')->with('type','success');
+            request()->session()->flash('success', 'Xóa vai trò thành công');
+            return redirect()->route('showRoles');
         }else
         {
-            return back()->with('msg','Xóa dữ liệu thất bại')->with('type','danger');
+            request()->session()->flash('error', 'Đã xảy ra lỗi khi xóa vai trò');
+            return redirect()->route('showRoles');
+
         }
     }
     public function showTrashRole()
     {
-        $dataTrashed = roles::onlyTrashed()->get();
-        return view('admin/roles/showRoleTrash',compact('dataTrashed'));
+        $dataTrashed = Role::onlyTrashed()->get();
+        return view('backend.roles.showRoleTrash',compact('dataTrashed'));
     }
     public function handleRoleRestore($id)
     {
-        $data= roles::withTrashed()->find($id);
+        $data= Role::withTrashed()->find($id);
         $data->restore();
-        return redirect()->route('admin.showRoles')->with('msg','Khôi phục dữ liệu thành công')->with('type','success');
+        return redirect()->route('showRoles')->with('msg','Khôi phục dữ liệu thành công')->with('type','success');
     }
     public function handleRoleForce($id)
     {
-        $dataForce = roles::withTrashed()->find($id);
+        $dataForce = Role::withTrashed()->find($id);
         $dataForce->forceDelete();
-        return redirect()->route('admin.showRoles')->with('msg','Dữ liệu đã được xóa vĩnh viễn')->with('type','success');
+        return redirect()->route('showRoles')->with('msg','Dữ liệu đã được xóa vĩnh viễn')->with('type','success');
     }
 
 

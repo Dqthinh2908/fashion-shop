@@ -1,4 +1,4 @@
-@extends('admin.layout-admin')
+@extends('backend.layouts.master')
 @section('title','Chỉnh sửa vai trò')
 @push('stylesheets')
     <style>
@@ -18,13 +18,13 @@
         })
     </script>
 @endpush
-@section('content')
-    <div class="container-fluid"> 
+@section('main-content')
+    <div class="container-fluid">
             <div class="row">
-                <form action="{{route('admin.handleEditRoles',['id'=>$role->id])}}" method="POST"  style="width:100%;">
+                <form action="{{route('handleEditRoles',['id'=>$role->id])}}" method="POST"  style="width:100%;">
                     @csrf
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <h1>Cập nhật vai trò mới</h1>
+                        <h5 class="card-header">Thêm mới vai trò</h5>
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -36,12 +36,12 @@
                         @endif
                         <div class="mb-3">
                             <label for="titleNews" class="form-label">Tên vai trò</label>
-                            <input type="name" value={{ $role->name }} name="name" class="form-control" id="username">
+                            <input value="{{@$role->name}}" name="name" class="form-control" id="username">
                         </div>
                         <div class="mb-3">
                             <label for="titleNews" class="form-label">Miêu tả vai trò</label>
                             <textarea name="display_name" class="form-control" row="4">{{ $role->description }}</textarea>
-                        </div>         
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <div class="row">
@@ -51,7 +51,7 @@
                                     checkall
                                 </label>
                             </div>
-                           @foreach($permissionsParent as $key => $value) 
+                           @foreach($permissionsParent as $key => $value)
                             <div class="card border-primary mb-3 col-md-12" >
                                 <div class="card-header">
                                     <label for="">
@@ -64,21 +64,21 @@
                                     <div class="card-body text-primary col-md-3">
                                         <h5 class="card-title">
                                             <label for="">
-                                                <input type="checkbox" {{ $permissionsChecked->contains('id',$permissionChildrentItem->id) ? 'checked' : '' }} 
+                                                <input type="checkbox" {{ $permissionsChecked->contains('id',$permissionChildrentItem->id) ? 'checked' : '' }}
                                                 class="checkbox_childrent" name="permission_id[]" value="{{ $permissionChildrentItem->id  }}">
                                             </label>
                                             {{ $permissionChildrentItem->name }}
                                         </h5>
                                     </div>
-                                    @endforeach              
+                                    @endforeach
                                 </div>
                             </div>
-                            @endforeach                    
+                            @endforeach
                         </div>
-                        
+
                     </div>
                     <button type="submit" class="btn btn-primary">Cập nhật</button>
                 </form>
-            </div>         
+            </div>
     </div>
 @endsection
