@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\RoleController;
-
+use App\Http\Controllers\PurchaseController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -143,6 +143,9 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     // Password Change
     Route::get('change-password', 'AdminController@changePassword')->name('change.password.form');
     Route::post('change-password', 'AdminController@changPasswordStore')->name('change.password');
+
+    //Purchase
+    route::get('showModalAddPurchase/{id}',[PurchaseController::class,'index'])->name('showPurchaseAdd');
 
     //Roles
     route::get('showRoles',[RoleController::class,'index'])->name('showRoles');
