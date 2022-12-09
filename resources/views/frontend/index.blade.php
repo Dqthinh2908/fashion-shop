@@ -116,7 +116,7 @@
                                                 @endphp
                                                 <img class="default-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
                                                 <img class="hover-img" src="{{$photo[0]}}" alt="{{$photo[0]}}">
-                                                @if($product->stock<=0)
+                                                @if(isset($product->purchase) && @$product->purchase->quantity <= 0 || !isset($product->purchase))
                                                     <span class="out-of-stock">Hết hàng</span>
                                                 @elseif($product->condition=='new')
                                                     <span class="new">Mới</span
@@ -206,8 +206,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="owl-carousel popular-slider">
-                    @foreach($product_lists as $product)
-                        @if($product->condition=='hot')
+                    @foreach($products_hot as $product)
                             <!-- Start Single Product -->
                         <div class="single-product">
                             <div class="product-img">
@@ -242,7 +241,6 @@
                             </div>
                         </div>
                         <!-- End Single Product -->
-                        @endif
                     @endforeach
                 </div>
             </div>
@@ -383,7 +381,6 @@
 
 <!-- Modal -->
 @if($product_lists)
-
     @foreach($product_lists as $key=>$product)
         <div class="modal fade" id="{{$product->id}}" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -436,10 +433,10 @@
                                                 <a href="#"> ({{$rate_count}} khách hàng đánh giá)</a>
                                             </div>
                                             <div class="quickview-stock">
-                                                @if($product->stock >0)
-                                                <span><i class="fa fa-check-circle-o"></i> {{$product->stock}} trong kho</span>
+                                                @if(isset($product->purchase) && @$product->purchase->quantity > 0)
+                                                <span><i class="fa fa-check-circle-o"></i> {{@$product->purchase->quantity}} trong kho</span>
                                                 @else
-                                                <span><i class="fa fa-times-circle-o text-danger"></i> {{$product->stock}} hết hàng</span>
+                                                <span><i class="fa fa-times-circle-o text-danger"></i> Hết Hàng</span>
                                                 @endif
                                             </div>
                                         </div>

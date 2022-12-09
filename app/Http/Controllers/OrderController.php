@@ -46,14 +46,10 @@ class OrderController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'string|required',
-            'last_name' => 'string|required',
             'address1' => 'string|required',
-            'coupon' => 'nullable|numeric',
             'phone' => 'numeric|required',
-            'post_code' => 'string|nullable',
             'email' => 'string|required'
         ]);
-        // return $request->all();
 
         if (empty(Cart::where('user_id', auth()->user()->id)->where('order_id', null)->first())) {
             request()->session()->flash('error', 'Giỏ hàng trống!');

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
-    protected $table = 'roles';
+    protected $table = 'purchases';
     protected $guarded = [];
 
     public function product()
     {
-        return $this->hasOne(Product::class,'product_id','id');
+        return $this->belongsTo(Product::class,'product_id','id');
     }
 }

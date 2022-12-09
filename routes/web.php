@@ -146,7 +146,8 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
 
     //Purchase
     route::get('showModalAddPurchase/{id}',[PurchaseController::class,'index'])->name('showPurchaseAdd');
-
+    route::post('handleAddPurchase',[PurchaseController::class,'create'])->name('handleAddPurchase');
+    route::post('handleUpdatePurchase/{id}',[PurchaseController::class,'update'])->name('handleUpdatePurchase');
     //Roles
     route::get('showRoles',[RoleController::class,'index'])->name('showRoles');
     route::get('showAddRoles',[RoleController::class,'showAddRoles'])->name('showAddRoles');

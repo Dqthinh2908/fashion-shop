@@ -60,7 +60,6 @@ class ProductController extends Controller
             'description' => 'string|nullable',
             'photo' => 'string|required',
             'size' => 'nullable',
-            'stock' => "required|numeric",
             'cat_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'child_cat_id' => 'nullable|exists:categories,id',
@@ -120,7 +119,7 @@ class ProductController extends Controller
             abort('403');
         }
         $brand = Brand::get();
-        $product = Product::findOrFail($id);
+        $product = Product::with('purchase')->findOrFail($id);
         $category = Category::where('is_parent', 1)->get();
         $items = Product::where('id', $id)->get();
         // return $items;
@@ -145,7 +144,6 @@ class ProductController extends Controller
             'description' => 'string|nullable',
             'photo' => 'string|required',
             'size' => 'nullable',
-            'stock' => "required|numeric",
             'cat_id' => 'required|exists:categories,id',
             'child_cat_id' => 'nullable|exists:categories,id',
             'is_featured' => 'sometimes|in:1',

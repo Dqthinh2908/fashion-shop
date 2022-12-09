@@ -42,7 +42,8 @@ class CartController extends Controller
             $already_cart->quantity = $already_cart->quantity + 1;
             $already_cart->amount = $product->price + $already_cart->amount;
             // return $already_cart->quantity;
-            if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error', 'Hàng không đủ!');
+            if ($already_cart->product->purchase->quantity < $already_cart->quantity || $already_cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
+
             $already_cart->save();
         } else {
 
@@ -53,7 +54,7 @@ class CartController extends Controller
             $cart->quantity = 1;
             $cart->amount = $cart->price * $cart->quantity;
             $cart->size_product = $request->size_product;
-            if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error', 'Hàng không đủ!.');
+            if ($cart->product->purchase->quantity < $cart->quantity || $cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
             $cart->save();
             $wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id', null)->update(['cart_id' => $cart->id]);
         }
@@ -74,8 +75,8 @@ class CartController extends Controller
             return back();
         }
 
-        $product = Product::where('slug', trim($request->slug))->first();
-        if ($product->stock < $request->quant[1]) {
+        $product = Product::where('slug', trim($request->slug))->with('purchase')->first();
+        if (isset($product->purchase) && $product->purchase->quantity < $request->quant[1] || !isset($product->purchase)) {
             return back()->with('error', 'Hết hàng, Bạn có thể bổ sung các sản phẩm khác.');
         }
         if (($request->quant[1] < 1) || empty($product)) {
@@ -84,13 +85,14 @@ class CartController extends Controller
         }
 
         $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->where('product_id', $product->id)->where('size_product',@$request->size_product)->first();
+
         // return $already_cart;
         if ($already_cart) {
             $already_cart->quantity = $already_cart->quantity + $request->quant[1];
             // $already_cart->price = ($product->price * $request->quant[1]) + $already_cart->price ;
             $already_cart->amount = ($product->price * $request->quant[1]) + $already_cart->amount;
 
-            if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error', 'Hàng không đủ!');
+            if ($already_cart->product->purchase->quantity < $already_cart->quantity || $already_cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
 
             $already_cart->save();
         } else {
@@ -102,7 +104,7 @@ class CartController extends Controller
             $cart->quantity = $request->quant[1];
             $cart->size_product = $request->size_product;
             $cart->amount = (($product->price - ($product->price * $product->discount) / 100) * $request->quant[1]);
-            if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error', 'Hàng không đủ!');
+            if ($cart->product->purchase->quantity < $cart->quantity || $cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
             // return $cart;
             $cart->save();
         }

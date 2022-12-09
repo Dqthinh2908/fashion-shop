@@ -57,10 +57,10 @@
                     <td>{{$product->condition}}</td>
                     <td> {{ucfirst($product->brand->title)}}</td>
                     <td>
-                      @if($product->stock>0)
-                      <span class="badge badge-primary">{{$product->stock}}</span>
+                      @if(isset($product->purchase) && @$product->purchase->quantity > 0)
+                      <span class="badge badge-primary">{{@$product->purchase->quantity}}</span>
                       @else
-                      <span class="badge badge-danger">{{$product->stock}}</span>
+                      <span class="badge badge-danger">Hết hàng</span>
                       @endif
                     </td>
                     <td>
@@ -124,6 +124,7 @@
 
   <!-- Page level plugins -->
   <script src="{{asset('backend/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+
   <script src="{{asset('backend/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
@@ -139,6 +140,7 @@
               }
           ]
         } );
+
 
         // Sweet alert
 
