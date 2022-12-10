@@ -330,9 +330,9 @@
                                         </a>
                                         <div class="button-head">
                                             <div class="product-action">
-                                                <a data-toggle="modal" data-target="#modelExample" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
-                                                <a title="Yêu thích" href="#"><i class=" ti-heart "></i><span>Thêm vào danh sách yêu thích</span></a>
-                                                <a title="So sánh" href="#"><i class="ti-bar-chart-alt"></i><span>Thêm vào danh sách so sánh</span></a>
+                                                <a data-toggle="modal" data-target="#{{$data->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Xem nhanh</span></a>
+                                                <a title="Wishlist" href="{{route('add-to-wishlist',$data->slug)}}" ><i class=" ti-heart "></i><span>Thêm vào mục yêu thích</span></a>
+
                                             </div>
                                             <div class="product-action-2">
                                                 <a title="Thêm vào giỏ hàng" href="#">Thêm vào giỏ hàng</a>
@@ -361,119 +361,137 @@
         </div>
     </div>
 	<!-- End Most Popular Area -->
+        @foreach($product_detail->rel_prods as $data)
 
+            @if($data->id !==$product_detail->id)
+                <div class="modal fade" id="{{$data->id}}" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row no-gutters">
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                        <!-- Product Slider -->
+                                        <div class="product-gallery">
+                                            <div class="quickview-slider-active">
+                                                @php
+                                                    $photo=explode(',',$data->photo);
+                                                // dd($photo);
+                                                @endphp
+                                                @foreach($photo as $data_value)
+                                                    <div class="single-slider">
+                                                        <img src="{{$data_value}}" alt="{{$data_value}}">
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <!-- End Product slider -->
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="quickview-content">
+                                            <h2>{{$data->title}}</h2>
+                                            <div class="quickview-ratting-review">
+                                                <div class="quickview-ratting-wrap">
+                                                    <div class="quickview-ratting">
+                                                        {{-- <i class="yellow fa fa-star"></i>
+                                                        <i class="yellow fa fa-star"></i>
+                                                        <i class="yellow fa fa-star"></i>
+                                                        <i class="yellow fa fa-star"></i>
+                                                        <i class="fa fa-star"></i> --}}
+                                                        @php
+                                                            $rate=DB::table('product_reviews')->where('product_id',$data->id)->avg('rate');
+                                                            $rate_count=DB::table('product_reviews')->where('product_id',$data->id)->count();
+                                                        @endphp
+                                                        @for($i=1; $i<=5; $i++)
+                                                            @if($rate>=$i)
+                                                                <i class="yellow fa fa-star"></i>
+                                                            @else
+                                                                <i class="fa fa-star"></i>
+                                                            @endif
+                                                        @endfor
+                                                    </div>
+                                                    <a href="#"> ({{$rate_count}} khách hàng đánh giá)</a>
+                                                </div>
+                                                <div class="quickview-stock">
+                                                    @if(isset($data->purchase) && @$data->purchase->quantity > 0)
+                                                        <span><i class="fa fa-check-circle-o"></i> {{@$data->purchase->quantity}} trong kho</span>
+                                                    @else
+                                                        <span><i class="fa fa-times-circle-o text-danger"></i> Hết Hàng</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            @php
+                                                $after_discount=($data->price-($data->price*$data->discount)/100);
+                                            @endphp
+                                            <h3><small><del class="text-muted">{{number_format($data->price,0)}} vnđ</del></small>    {{number_format($after_discount,0)}} vnđ</h3>
+                                            <div class="quickview-peragraph">
+                                                <p>{!! html_entity_decode($data->summary) !!}</p>
+                                            </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="modelExample" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
-            </div>
-            <div class="modal-body">
-                <div class="row no-gutters">
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <!-- Product Slider -->
-                            <div class="product-gallery">
-                                <div class="quickview-slider-active">
-                                    <div class="single-slider">
-                                        <img src="images/modal1.png" alt="#">
-                                    </div>
-                                    <div class="single-slider">
-                                        <img src="images/modal2.png" alt="#">
-                                    </div>
-                                    <div class="single-slider">
-                                        <img src="images/modal3.png" alt="#">
-                                    </div>
-                                    <div class="single-slider">
-                                        <img src="images/modal4.png" alt="#">
-                                    </div>
-                                </div>
-                            </div>
-                        <!-- End Product slider -->
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <div class="quickview-content">
-                            <h2>Flared Shift Dress</h2>
-                            <div class="quickview-ratting-review">
-                                <div class="quickview-ratting-wrap">
-                                    <div class="quickview-ratting">
-                                        <i class="yellow fa fa-star"></i>
-                                        <i class="yellow fa fa-star"></i>
-                                        <i class="yellow fa fa-star"></i>
-                                        <i class="yellow fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <a href="#"> (1 customer review)</a>
-                                </div>
-                                <div class="quickview-stock">
-                                    <span><i class="fa fa-check-circle-o"></i> in stock</span>
-                                </div>
-                            </div>
-                            <h3>$29.00</h3>
-                            <div class="quickview-peragraph">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iste laborum ad impedit pariatur esse optio tempora sint ullam autem deleniti nam in quos qui nemo ipsum numquam.</p>
-                            </div>
-                            <div class="size">
-                                <div class="row">
-                                    <div class="col-lg-6 col-12">
-                                        <h5 class="title">Size</h5>
-                                        <select>
-                                            <option selected="selected">s</option>
-                                            <option>m</option>
-                                            <option>l</option>
-                                            <option>xl</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-12">
-                                        <h5 class="title">Color</h5>
-                                        <select>
-                                            <option selected="selected">orange</option>
-                                            <option>purple</option>
-                                            <option>black</option>
-                                            <option>pink</option>
-                                        </select>
+                                            <form action="{{route('single-add-to-cart')}}" method="POST" class="mt-4">
+                                                @csrf
+                                                @if($data->size)
+                                                    <div class="size">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-12">
+                                                                <h5 class="title">Size</h5>
+                                                                <select name="size_product">
+                                                                    @php
+                                                                        $sizes=explode(',',$data->size);
+                                                                        // dd($sizes);
+                                                                    @endphp
+                                                                    @foreach($sizes as $size)
+                                                                        <option @if(strtoupper(trim($size)) == 'S') value="1"
+                                                                                @elseif(strtoupper(trim($size)) == 'M') value="2"
+                                                                                @elseif(strtoupper(trim($size)) == 'L') value="3"
+                                                                                @elseif(strtoupper(trim($size)) == 'XL') value="4"
+                                                                            @endif
+                                                                        >{{strtoupper($size)}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                <div class="quantity">
+                                                    <!-- Input Order -->
+                                                    <div class="input-group">
+                                                        <div class="button minus">
+                                                            <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                                                <i class="ti-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <input type="hidden" name="slug" value="{{$data->slug}}">
+                                                        <input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="1000" value="1">
+                                                        <div class="button plus">
+                                                            <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                                                                <i class="ti-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!--/ End Input Order -->
+                                                </div>
+                                                <div class="add-to-cart">
+                                                    <button type="submit" class="btn">Thêm vào giỏ hàng</button>
+                                                    <a href="{{route('add-to-wishlist',$data->slug)}}" class="btn min"><i class="ti-heart"></i></a>
+                                                </div>
+                                            </form>
+                                            <div class="default-social">
+                                                <!-- ShareThis BEGIN --><div class="sharethis-inline-share-buttons"></div><!-- ShareThis END -->
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="quantity">
-                                <!-- Input Order -->
-                                <div class="input-group">
-                                    <div class="button minus">
-                                        <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                            <i class="ti-minus"></i>
-                                        </button>
-									</div>
-                                    <input type="text" name="qty" class="input-number"  data-min="1" data-max="1000" value="1">
-                                    <div class="button plus">
-                                        <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-                                            <i class="ti-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <!--/ End Input Order -->
-                            </div>
-                            <div class="add-to-cart">
-                                <a href="#" class="btn">Add to cart</a>
-                                <a href="#" class="btn min"><i class="ti-heart"></i></a>
-                                <a href="#" class="btn min"><i class="fa fa-compress"></i></a>
-                            </div>
-                            <div class="default-social">
-                                <h4 class="share-now">Share:</h4>
-                                <ul>
-                                    <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                                    <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a class="youtube" href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                                    <li><a class="dribbble" href="#"><i class="fa fa-google-plus"></i></a></li>
-                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+            @endif
+        @endforeach
+  <!-- Modal -->
+
 <!-- Modal end -->
 
 @endsection

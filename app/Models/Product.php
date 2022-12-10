@@ -23,7 +23,7 @@ class Product extends Model
     }
     public function rel_prods()
     {
-        return $this->hasMany('App\Models\Product', 'cat_id', 'cat_id')->where('status', 'active')->orderBy('id', 'DESC')->limit(8);
+        return $this->hasMany('App\Models\Product', 'cat_id', 'cat_id')->where('status', 'active')->with('purchase')->orderBy('id', 'DESC')->limit(8);
     }
     public function getReview()
     {

@@ -71,15 +71,9 @@
                 <div class="col-lg-8 col-md-7 col-12">
                     <div class="search-bar-top">
                         <div class="search-bar">
-                            <select>
-                                <option >Danh mục</option>
-                                @foreach(Helper::getAllCategory() as $cat)
-                                    <option>{{$cat->title}}</option>
-                                @endforeach
-                            </select>
-                            <form method="POST" action="{{route('product.search')}}">
+                            <form method="POST" action="{{route('product.search')}}" style="width:100%">
                                 @csrf
-                                <input name="search" placeholder="Tìm sản phẩm ở đây....." type="search">
+                                <input style="width:100%" name="search" placeholder="Tìm sản phẩm ở đây....." type="search">
                                 <button class="btnn" type="submit"><i class="ti-search"></i></button>
                             </form>
                         </div>

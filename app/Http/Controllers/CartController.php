@@ -54,6 +54,7 @@ class CartController extends Controller
             $cart->quantity = 1;
             $cart->amount = $cart->price * $cart->quantity;
             $cart->size_product = $request->size_product;
+
             if ($cart->product->purchase->quantity < $cart->quantity || $cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
             $cart->save();
             $wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id', null)->update(['cart_id' => $cart->id]);
@@ -85,7 +86,6 @@ class CartController extends Controller
         }
 
         $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->where('product_id', $product->id)->where('size_product',@$request->size_product)->first();
-
         // return $already_cart;
         if ($already_cart) {
             $already_cart->quantity = $already_cart->quantity + $request->quant[1];
@@ -93,10 +93,8 @@ class CartController extends Controller
             $already_cart->amount = ($product->price * $request->quant[1]) + $already_cart->amount;
 
             if ($already_cart->product->purchase->quantity < $already_cart->quantity || $already_cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
-
             $already_cart->save();
         } else {
-
             $cart = new Cart;
             $cart->user_id = auth()->user()->id;
             $cart->product_id = $product->id;
@@ -104,6 +102,7 @@ class CartController extends Controller
             $cart->quantity = $request->quant[1];
             $cart->size_product = $request->size_product;
             $cart->amount = (($product->price - ($product->price * $product->discount) / 100) * $request->quant[1]);
+
             if ($cart->product->purchase->quantity < $cart->quantity || $cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
             // return $cart;
             $cart->save();
@@ -126,31 +125,22 @@ class CartController extends Controller
 
     public function cartUpdate(Request $request)
     {
-        // dd($request->all());
         if ($request->quant) {
             $error = array();
             $success = '';
-            // return $request->quant;
             foreach ($request->quant as $k => $quant) {
-                // return $k;
                 $id = $request->qty_id[$k];
-                // return $id;
                 $cart = Cart::find($id);
-                // return $cart;
                 if ($quant > 0 && $cart) {
-                    // return $quant;
-
-                    if ($cart->product->stock < $quant) {
-                        request()->session()->flash('error', 'Hết hàng');
+                    if ($cart->product->purchase->quantity < $quant) {
+                        request()->session()->flash('error', 'Sản phẩm quá số lượng trong kho');
                         return back();
                     }
-                    $cart->quantity = ($cart->product->stock > $quant) ? $quant  : $cart->product->stock;
-                    // return $cart;
+                    $cart->quantity = ($cart->product->purchase->quantity > $quant) ? $quant  : $cart->product->purchase->quantity;
 
-                    if ($cart->product->stock <= 0) continue;
+                    if ($cart->product->purchase->quantity <= 0) continue;
                     $after_price = ($cart->product->price - ($cart->product->price * $cart->product->discount) / 100);
                     $cart->amount = $after_price * $quant;
-                    // return $cart->price;
                     $cart->save();
                     $success = 'Cập nhật giỏ hàng thành công!';
                 } else {

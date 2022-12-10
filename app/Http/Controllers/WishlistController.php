@@ -32,7 +32,7 @@ class WishlistController extends Controller
         $already_wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id', null)->where('product_id', $product->id)->first();
         // return $already_wishlist;
         if ($already_wishlist) {
-            request()->session()->flash('error', 'Bạn đã thêm vào danh sách yêu thích');
+            request()->session()->flash('error', 'Sản phẩm bạn chọn đã có trong danh sách yêu thích');
             return back();
         } else {
 
@@ -42,7 +42,11 @@ class WishlistController extends Controller
             $wishlist->price = ($product->price - ($product->price * $product->discount) / 100);
             $wishlist->quantity = 1;
             $wishlist->amount = $wishlist->price * $wishlist->quantity;
-            if ($wishlist->product->stock < $wishlist->quantity || $wishlist->product->stock <= 0) return back()->with('error', 'Stock not sufficient!.');
+            if(!isset($wishlist->product->purchase))
+            {
+                return back()->with('error', 'Sản phẩm đã hết hàng!');
+            }
+            if ($wishlist->product->purchase->quantity < $wishlist->quantity || $wishlist->product->purchase->quantity <= 0) return back()->with('error', 'Sản phẩm đã hết hàng!');
             $wishlist->save();
         }
         request()->session()->flash('success', 'Sản phẩm đã thêm vào danh sách yêu thích');

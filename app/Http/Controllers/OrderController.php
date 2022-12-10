@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
@@ -45,16 +46,42 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'first_name' => 'string|required',
-            'address1' => 'string|required',
-            'phone' => 'numeric|required',
-            'email' => 'string|required'
-        ]);
+            'first_name' => 'required|string',
+            'address1' => 'required|string',
+            'phone' => 'required|numeric',
+            'email' => 'required|email'
+        ],
+            [
+                'first_name.required'=>'Họ và tên không được để trống',
+                'first_name.string'=>'Họ và tên phải là chữ',
+                'email.email'=>'Email chưa đúng định dạng',
+                'email.required'=>'Email không được để trống',
+                'address1.required'=>'Địa chỉ không dược để trồng',
+                'address1.string'=>'Địa chỉ cần nhập là kí tự chữ',
+            ]);
 
         if (empty(Cart::where('user_id', auth()->user()->id)->where('order_id', null)->first())) {
             request()->session()->flash('error', 'Giỏ hàng trống!');
             return back();
         }
+        $cart_product_update = Cart::where('user_id', auth()->user()->id)->where('order_id', null)->with('product.purchase')->get()->groupBy('product_id');
+        $data_product_cart = $this->tranformProductOrder($cart_product_update);
+        $check_update = $this->checkUpdateProductPurcharse($data_product_cart);
+
+        if($check_update)
+        {
+            foreach ($data_product_cart as $product_id => $quantity_cart)
+            {
+                $data_purchase = Purchase::where('product_id',$product_id)->first();
+                $number_quantity_update = $data_purchase->quantity - $quantity_cart;
+                Purchase::findOrFail($data_purchase->id)->update(['quantity'=>$number_quantity_update]);
+            }
+        }else
+        {
+            request()->session()->flash('error', 'Sản phẩm bạn đặt đã quá số lượng trong kho!');
+            return back();
+        }
+
 
         $order = new Order();
         $order_data = $request->all();
@@ -154,15 +181,18 @@ class OrderController extends Controller
         ]);
         $data = $request->all();
         // return $request->status;
-        if ($request->status == 'delivered') {
-            foreach ($order->cart as $cart) {
-                $product = $cart->product;
-                // return $product;
-                $product->stock -= $cart->quantity;
-                $product->save();
-            }
+        if($data['status'] == 'delivered')
+        {
+            $status = $order->update([
+                'status'=>$data['status'],
+                'payment_status'=>'Đã thanh toán'
+            ]);
+        }else
+        {
+            $status = $order->update([
+                'status'=>$data['status'],
+            ]);
         }
-        $status = $order->fill($data)->save();
         if ($status) {
             request()->session()->flash('success', 'Cập nhật đơn hàng thành công!');
         } else {
@@ -259,4 +289,56 @@ class OrderController extends Controller
         }
         return $data;
     }
+    public function tranformProductOrder($total_product_order)
+    {
+        $data_array = array();
+        $sum_quantity = 0;
+        $sum_amount = 0;
+        $i  = 0;
+
+        foreach ($total_product_order as $key => $value)
+        {
+            foreach ($value as $data)
+            {
+                $i++;
+                $sum_quantity += $data->quantity;
+
+            }
+            $data_array[$key] = $sum_quantity;
+            if($i == count($value))
+            {
+                $sum_quantity = 0;
+            }
+        }
+        return $data_array;
+    }
+    public function checkUpdateProductPurcharse($data_product_cart)
+    {
+        if(!empty($data_product_cart))
+        {
+            $flag_check = true;
+            foreach ($data_product_cart as $product_id =>$quantity_cart)
+            {
+                $data_purchase = Purchase::where('product_id',$product_id)->first();
+                if(empty($data_purchase))
+                {
+                    $flag_check = false;
+                }
+
+                if((int)$data_purchase->quantity > $quantity_cart)
+                {
+                    $count_product = $data_purchase->quantity - $quantity_cart;
+                    if($count_product < 0)
+                    {
+                        $flag_check = false;
+                    }
+                }else
+                {
+                    $flag_check = false;
+                }
+            }
+        }
+        return $flag_check;
+    }
+
 }
