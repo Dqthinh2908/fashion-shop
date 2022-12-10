@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use App\Models\Settings;
 use App\User;
@@ -27,8 +28,14 @@ class AdminController extends Controller
         $total_product_order = Order::getAllProductOrder();
         $data_items = $this->tranformProductOrder($total_product_order);
         $count_product_sold = Order::getProductsSold();
+        $product_out_of_sock = count(Purchase::all()->filter(function ($value){
+           if($value->quantity <10)
+           {
+               return $value;
+           }
+        }));
         //  return $data;
-        return view('backend.index')->with(['users' => json_encode($array),'data_items'=>$data_items,'count_product_sold'=>$count_product_sold]);
+        return view('backend.index')->with(['users' => json_encode($array),'data_items'=>$data_items,'count_product_sold'=>$count_product_sold,'product_out_of_sock'=>$product_out_of_sock]);
     }
 
     public function profile()
