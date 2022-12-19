@@ -16,7 +16,7 @@ class PermissionGateAndPolicyAccess{
         $this->defineGatePostCategory();
         $this->defineGateRole();
         $this->defineGateUser();
-
+        $this->defineGateCoupon();
     }
     public function defineGateBanner()
     {
@@ -77,10 +77,17 @@ class PermissionGateAndPolicyAccess{
     }
     public function defineGateUser()
     {
-        Gate::define('list_account','App\Policies\RolePolicy@view');
-        Gate::define('add_account', 'App\Policies\RolePolicy@create');
-        Gate::define('update_account', 'App\Policies\RolePolicy@update');
-        Gate::define('delete_account','App\Policies\RolePolicy@delete');
+        Gate::define('list_account','App\Policies\UserPolicy@view');
+        Gate::define('add_account', 'App\Policies\UserPolicy@create');
+        Gate::define('update_account', 'App\Policies\UserPolicy@update');
+        Gate::define('delete_account','App\Policies\UserPolicy@delete');
+    }
+    public function defineGateCoupon()
+    {
+        Gate::define('list_coupon','App\Policies\CouponPolicy@view');
+        Gate::define('add_coupon', 'App\Policies\CouponPolicy@create');
+        Gate::define('update_coupon', 'App\Policies\CouponPolicy@update');
+        Gate::define('delete_coupon','App\Policies\CouponPolicy@delete');
     }
 
 

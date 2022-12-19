@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use Illuminate\Support\Facades\Gate;
 
 class CouponController extends Controller
 {
@@ -15,6 +16,10 @@ class CouponController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_coupon'))
+        {
+            abort('403');
+        }
         $coupon = Coupon::orderBy('id', 'DESC')->paginate('10');
         return view('backend.coupon.index')->with('coupons', $coupon);
     }
@@ -26,6 +31,10 @@ class CouponController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_coupon'))
+        {
+            abort('403');
+        }
         return view('backend.coupon.create');
     }
 
@@ -72,6 +81,10 @@ class CouponController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_coupon'))
+        {
+            abort('403');
+        }
         $coupon = Coupon::find($id);
         if ($coupon) {
             return view('backend.coupon.edit')->with('coupon', $coupon);
@@ -115,6 +128,10 @@ class CouponController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_coupon'))
+        {
+            abort('403');
+        }
         $coupon = Coupon::find($id);
         if ($coupon) {
             $status = $coupon->delete();
