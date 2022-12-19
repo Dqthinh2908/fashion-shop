@@ -20,6 +20,7 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+
         if (empty(Auth()->user()->id)) {
             request()->session()->flash('error', 'Vui lòng đăng nhập');
             return back();

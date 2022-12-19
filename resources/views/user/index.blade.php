@@ -19,9 +19,10 @@
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Số đơn hàng</th>
               <th>Tên</th>
+                <th>Ngày đặt hàng</th>
               <th>Email</th>
               <th>Số lượng</th>
               <th>Tổng tiền</th>
@@ -31,14 +32,16 @@
           </thead>
           <tbody>
             @if(count($orders)>0)
+                <?php $i = 1?>
               @foreach($orders as $order)
                 <tr>
-                    <td>{{$order->id}}</td>
-                    <td>{{$order->order_number}}</td>
-                    <td>{{$order->first_name}} {{$order->last_name}}</td>
-                    <td>{{$order->email}}</td>
-                    <td>{{$order->quantity}}</td>
-                    <td>{{number_format($order->total_amount,0)}} vnđ</td>
+                    <td>{{$i++}}</td>
+                    <td>{{@$order->order_number}}</td>
+                    <td>{{@$order->first_name}} {{$order->last_name}}</td>
+                    <td>{{ \Carbon\Carbon::parse($order->created_at)->format('d/m/Y') }}</td>
+                    <td>{{@$order->email}}</td>
+                    <td>{{@$order->quantity}}</td>
+                    <td>{{number_format(@$order->total_amount,0)}} vnđ</td>
                     <td>
                         @if($order->status=='new')
                             <span class="badge badge-primary">Đơn hàng mới</span>
@@ -52,11 +55,6 @@
                     </td>
                     <td>
                         <a href="{{route('user.order.show',$order->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="Xem" data-placement="bottom"><i class="fas fa-eye"></i></a>
-                        <form method="POST" action="{{route('user.order.delete',[$order->id])}}">
-                          @csrf
-                          @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$order->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                        </form>
                     </td>
                 </tr>
               @endforeach

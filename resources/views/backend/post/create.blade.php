@@ -61,10 +61,7 @@
         <div class="form-group">
           <label for="added_by">Tác giả</label>
           <select name="added_by" class="form-control">
-              <option value="">--Chọn một--</option>
-              @foreach($users as $key=>$data)
-                <option value='{{$data->id}}' {{($key==0) ? 'selected' : ''}}>{{$data->name}}</option>
-            @endforeach
+                <option value='{{Auth()->user()->id}}'>{{Auth()->user()->name}}</option>
           </select>
         </div>
         <div class="form-group">
@@ -82,7 +79,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        
+
         <div class="form-group">
           <label for="status" class="col-form-label">Trạng thái <span class="text-danger">*</span></label>
           <select name="status" class="form-control">

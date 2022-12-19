@@ -15,7 +15,7 @@ class ProductReview extends Model
 
     public static function getAllReview()
     {
-        return ProductReview::with('user_info')->paginate(10);
+        return ProductReview::with('user_info')->orderBy('created_at','desc')->paginate(10);
     }
     public static function getAllUserReview()
     {

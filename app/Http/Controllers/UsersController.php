@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,10 @@ class UsersController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_account'))
+        {
+            abort('403');
+        }
         $users = User::orderBy('id', 'ASC')->paginate(10);
         return view('backend.users.index')->with('users', $users);
     }
@@ -36,6 +41,10 @@ class UsersController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_account'))
+        {
+            abort('403');
+        }
         $roles = $this->role->all();
         return view('backend.users.create',compact('roles'));
     }
@@ -108,6 +117,10 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_account'))
+        {
+            abort('403');
+        }
         $roles = $this->role->all();
         // dd($roles);
         $user = $this->user->find($id);
@@ -166,6 +179,10 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_account'))
+        {
+            abort('403');
+        }
         $delete = User::findorFail($id);
         $status = $delete->delete();
         if ($status) {

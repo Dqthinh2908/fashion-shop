@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Brand;
+use App\Models\Banner;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BrandPolicy
+class BannerPolicy
 {
     use HandlesAuthorization;
 
@@ -18,7 +18,6 @@ class BrandPolicy
      */
     public function viewAny(User $user)
     {
-        //
     }
 
     /**
@@ -30,7 +29,8 @@ class BrandPolicy
      */
     public function view(User $user)
     {
-        return $user->checkPermissionAccess('list_brand');
+        return $user->checkPermissionAccess('list_banner');
+
     }
 
     /**
@@ -41,7 +41,7 @@ class BrandPolicy
      */
     public function create(User $user)
     {
-        return $user->checkPermissionAccess('add_brand');
+        return $user->checkPermissionAccess('add_banner');
     }
 
     /**
@@ -53,7 +53,7 @@ class BrandPolicy
      */
     public function update(User $user)
     {
-        return $user->checkPermissionAccess('update_brand');
+        return $user->checkPermissionAccess('update_banner');
     }
 
     /**
@@ -65,7 +65,7 @@ class BrandPolicy
      */
     public function delete(User $user)
     {
-        return $user->checkPermissionAccess('delete_brand');
+        return $user->checkPermissionAccess('update_banner');
     }
 
     /**

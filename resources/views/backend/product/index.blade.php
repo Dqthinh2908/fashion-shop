@@ -88,7 +88,7 @@
                       @method('delete')
                           <button class="btn btn-danger btn-sm dltBtn" data-id={{$product->id}} style="height:26px; width:26px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Delete"><i style="font-size: 13px;margin-left: -3px" class="fas fa-trash-alt"></i></button>
                         </form>
-                        <a href="{{route('showPurchaseAdd',$product->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:26px; width:26px;border-radius:50%" data-toggle="tooltip" title="Nhập hàng" data-placement="bottom"><i style="font-size: 13px;margin-left: -3px" class="fas fa-edit"></i></a>
+                        <a href="{{route('showPurchaseAdd',$product->id)}}" class="btn btn-warning btn-sm float-left mr-1" style="height:26px; width:26px;border-radius:50%" data-toggle="tooltip" title="Nhập hàng" data-placement="bottom"><i style="font-size: 13px;margin-left: -3px"  class="fas fa-home"></i></a>
                     </td>
                 </tr>
             @endforeach

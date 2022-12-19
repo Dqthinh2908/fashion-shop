@@ -6,7 +6,7 @@
     <h5 class="card-header">Sửa sản phẩm</h5>
     <div class="card-body">
       <form method="post" action="{{route('product.update',$product->id)}}">
-        @csrf 
+        @csrf
         @method('PATCH')
         <div class="form-group">
           <label for="inputTitle" class="col-form-label">Tiêu đề <span class="text-danger">*</span></label>
@@ -35,7 +35,7 @@
 
         <div class="form-group">
           <label for="is_featured">Là danh mục cha?</label><br>
-          <input type="checkbox" name='is_featured' id='is_featured' value='{{$product->is_featured}}' {{(($product->is_featured) ? 'checked' : '')}}> Có                        
+          <input type="checkbox" name='is_featured' id='is_featured' value='{{$product->is_featured}}' {{(($product->is_featured) ? 'checked' : '')}}> Có
         </div>
               {{-- {{$categories}} --}}
 
@@ -48,7 +48,7 @@
               @endforeach
           </select>
         </div>
-        @php 
+        @php
           $sub_cat_info=DB::table('categories')->select('title')->where('id',$product->child_cat_id)->get();
         // dd($sub_cat_info);
 
@@ -58,7 +58,7 @@
           <label for="child_cat_id">Danh mục phụ</label>
           <select name="child_cat_id" id="child_cat_id" class="form-control">
               <option value="">--Chọn danh mục phụ--</option>
-              
+
           </select>
         </div>
 
@@ -72,7 +72,7 @@
 
         <div class="form-group">
           <label for="discount" class="col-form-label">Mã giảm giá(%)</label>
-          <input id="discount" type="number" name="discount" min="0" max="100" placeholder="Nhập mã giảm giá"  value="{{$product->discount}}" class="form-control">
+          <input id="discount" type="number" name="discount" min="0" max="100" value="{{$product->discount}}" class="form-control">
           @error('discount')
           <span class="text-danger">{{$message}}</span>
           @enderror
@@ -81,8 +81,8 @@
           <label for="size">Size</label>
           <select name="size[]" class="form-control selectpicker"  multiple data-live-search="true">
               <option value="">--Chọn size--</option>
-              @foreach($items as $item)              
-                @php 
+              @foreach($items as $item)
+                @php
                 $data=explode(',',$item->size);
                 // dd($data);
                 @endphp
@@ -114,13 +114,6 @@
         </div>
 
         <div class="form-group">
-          <label for="stock">Số lượng <span class="text-danger">*</span></label>
-          <input id="quantity" type="number" name="stock" min="0" placeholder="Nhập số lượng"  value="{{$product->stock}}" class="form-control">
-          @error('stock')
-          <span class="text-danger">{{$message}}</span>
-          @enderror
-        </div>
-        <div class="form-group">
           <label for="inputPhoto" class="col-form-label">Ảnh <span class="text-danger">*</span></label>
           <div class="input-group">
               <span class="input-group-btn">
@@ -135,7 +128,7 @@
           <span class="text-danger">{{$message}}</span>
           @enderror
         </div>
-        
+
         <div class="form-group">
           <label for="status" class="col-form-label">Trạng thái <span class="text-danger">*</span></label>
           <select name="status" class="form-control">

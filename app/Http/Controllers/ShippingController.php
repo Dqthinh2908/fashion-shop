@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Shipping;
 use App\Models\Coupon;
+use Illuminate\Support\Facades\Gate;
 
 class ShippingController extends Controller
 {
@@ -15,6 +16,10 @@ class ShippingController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_transfer'))
+        {
+            abort('403');
+        }
         $shipping = Shipping::orderBy('id', 'DESC')->paginate(10);
         return view('backend.shipping.index')->with('shippings', $shipping);
     }
@@ -26,6 +31,10 @@ class ShippingController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_transfer'))
+        {
+            abort('403');
+        }
         return view('backend.shipping.create');
     }
 
@@ -72,6 +81,10 @@ class ShippingController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_transfer'))
+        {
+            abort('403');
+        }
         $shipping = Shipping::find($id);
         if (!$shipping) {
             request()->session()->flash('error', 'Không tìm thấy đơn vị vận chuyển');
@@ -113,6 +126,10 @@ class ShippingController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_transfer'))
+        {
+            abort('403');
+        }
         $shipping = Shipping::find($id);
         if ($shipping) {
             $status = $shipping->delete();

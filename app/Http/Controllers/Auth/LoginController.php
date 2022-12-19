@@ -30,7 +30,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+//    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -42,34 +42,34 @@ class LoginController extends Controller
     {
         return ['email' => $request->email, 'password' => $request->password, 'status' => 'active', 'role' => 'admin'];
     }
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('guest')->except('logout');
+//    }
+//
+//    public function redirect($provider)
+//    {
+//        // dd($provider);
+//        return Socialite::driver($provider)->redirect();
+//    }
 
-    public function redirect($provider)
-    {
-        // dd($provider);
-        return Socialite::driver($provider)->redirect();
-    }
-
-    public function Callback($provider)
-    {
-        $userSocial =   Socialite::driver($provider)->stateless()->user();
-        $users      =   User::where(['email' => $userSocial->getEmail()])->first();
-        // dd($users);
-        if ($users) {
-            Auth::login($users);
-            return redirect('/')->with('success', 'Bạn đã đăng nhập từ ' . $provider);
-        } else {
-            $user = User::create([
-                'name'          => $userSocial->getName(),
-                'email'         => $userSocial->getEmail(),
-                'image'         => $userSocial->getAvatar(),
-                'provider_id'   => $userSocial->getId(),
-                'provider'      => $provider,
-            ]);
-            return redirect()->route('home');
-        }
-    }
+//    public function Callback($provider)
+//    {
+//        $userSocial =   Socialite::driver($provider)->stateless()->user();
+//        $users      =   User::where(['email' => $userSocial->getEmail()])->first();
+//        // dd($users);
+//        if ($users) {
+//            Auth::login($users);
+//            return redirect('/')->with('success', 'Bạn đã đăng nhập từ ' . $provider);
+//        } else {
+//            $user = User::create([
+//                'name'          => $userSocial->getName(),
+//                'email'         => $userSocial->getEmail(),
+//                'image'         => $userSocial->getAvatar(),
+//                'provider_id'   => $userSocial->getId(),
+//                'provider'      => $provider,
+//            ]);
+//            return redirect()->route('home');
+//        }
+//    }
 }

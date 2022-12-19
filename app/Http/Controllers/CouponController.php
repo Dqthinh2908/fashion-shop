@@ -132,11 +132,9 @@ class CouponController extends Controller
 
     public function couponStore(Request $request)
     {
-        // return $request->all();
-        $coupon = Coupon::where('code', $request->code)->first();
-        // dd($coupon);
+        $coupon = Coupon::where('code', $request->code)->where('status','active')->first();
         if (!$coupon) {
-            request()->session()->flash('error', 'Hãy thử lại');
+            request()->session()->flash('error', 'Mã giảm giá không hợp lệ Hãy thử lại');
             return back();
         }
         if ($coupon) {

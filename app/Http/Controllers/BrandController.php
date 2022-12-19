@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class BrandController extends Controller
@@ -15,6 +16,10 @@ class BrandController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_brand'))
+        {
+            abort('403');
+        }
         $brand = Brand::orderBy('id', 'DESC')->paginate();
         return view('backend.brand.index')->with('brands', $brand);
     }
@@ -26,6 +31,10 @@ class BrandController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_brand'))
+        {
+            abort('403');
+        }
         return view('backend.brand.create');
     }
 
@@ -76,6 +85,10 @@ class BrandController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_brand'))
+        {
+            abort('403');
+        }
         $brand = Brand::find($id);
         if (!$brand) {
             request()->session()->flash('error', 'Không tìm thấy thương hiệu!');
@@ -116,6 +129,10 @@ class BrandController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_brand'))
+        {
+            abort('403');
+        }
         $brand = Brand::find($id);
         if ($brand) {
             $status = $brand->delete();

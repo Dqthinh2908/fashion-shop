@@ -137,6 +137,9 @@
 							<div class="col-lg-4 col-md-7 col-12">
 								<div class="right">
 									<ul>
+                                        @if(count(Helper::getAllProductFromCart()) <= 0)
+                                            {{session()->forget('coupon')}}
+                                        @endif
 										<li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Tổng phụ giỏ hàng<span>{{number_format(Helper::totalCartPrice(),0)}} vnđ</span></li>
 
 										@if(session()->has('coupon'))
@@ -144,7 +147,7 @@
 										@endif
 										@php
 											$total_amount=Helper::totalCartPrice();
-											if(session()->has('coupon')){
+											if(session()->has('coupon') && $total_amount > 0){
 												$total_amount=$total_amount-Session::get('coupon')['value'];
 											}
 										@endphp

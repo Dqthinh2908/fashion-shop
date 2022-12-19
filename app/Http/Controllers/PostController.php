@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use App\Models\Post;
 use App\Models\PostCategory;
@@ -18,6 +19,10 @@ class PostController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_post'))
+        {
+            abort('403');
+        }
         $posts = Post::getAllPost();
         // return $posts;
         return view('backend.post.index')->with('posts', $posts);
@@ -30,6 +35,10 @@ class PostController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_post'))
+        {
+            abort('403');
+        }
         $categories = PostCategory::get();
         $tags = PostTag::get();
         $users = User::get();
@@ -102,6 +111,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_post'))
+        {
+            abort('403');
+        }
         $post = Post::findOrFail($id);
         $categories = PostCategory::get();
         $tags = PostTag::get();
@@ -159,6 +172,10 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_post'))
+        {
+            abort('403');
+        }
         $post = Post::findOrFail($id);
 
         $status = $post->delete();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PostCategory;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 class PostCategoryController extends Controller
@@ -15,6 +16,10 @@ class PostCategoryController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('list_post_category'))
+        {
+            abort('403');
+        }
         $postCategory = PostCategory::orderBy('id', 'DESC')->paginate(10);
         return view('backend.postcategory.index')->with('postCategories', $postCategory);
     }
@@ -26,6 +31,10 @@ class PostCategoryController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('add_post_category'))
+        {
+            abort('403');
+        }
         return view('backend.postcategory.create');
     }
 
@@ -77,6 +86,10 @@ class PostCategoryController extends Controller
      */
     public function edit($id)
     {
+        if(Gate::denies('update_post_category'))
+        {
+            abort('403');
+        }
         $postCategory = PostCategory::findOrFail($id);
         return view('backend.postcategory.edit')->with('postCategory', $postCategory);
     }
@@ -114,6 +127,10 @@ class PostCategoryController extends Controller
      */
     public function destroy($id)
     {
+        if(Gate::denies('delete_post_category'))
+        {
+            abort('403');
+        }
         $postCategory = PostCategory::findOrFail($id);
 
         $status = $postCategory->delete();

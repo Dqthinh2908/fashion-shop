@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 
 class RoleController extends Controller
@@ -19,11 +20,19 @@ class RoleController extends Controller
     }
     public function index()
     {
+        if(Gate::denies('list_role'))
+        {
+            abort('403');
+        }
         $dataRoles = Role::all();
         return view('backend.roles.index',compact('dataRoles'));
     }
     public function showAddRoles()
     {
+        if(Gate::denies('add_role'))
+        {
+            abort('403');
+        }
         $permissionsParent = $this->permission->where('parent_id',0)->get();
         return view('backend.roles.addRoles',compact('permissionsParent'));
     }
@@ -55,6 +64,10 @@ class RoleController extends Controller
     }
     public function showEditRoles(Request $request,$id)
     {
+        if(Gate::denies('update_role'))
+        {
+            abort('403');
+        }
         $permissionsParent = $this->permission->where('parent_id',0)->get();
         $role = $this->role->find($id);
         $permissionsChecked = $role->permissions;
@@ -79,6 +92,10 @@ class RoleController extends Controller
     }
     public function handleDeleteRoles(Request $request, $id)
     {
+        if(Gate::denies('delete_role'))
+        {
+            abort('403');
+        }
         $deleteRole = Role::destroy($id);
         if($deleteRole)
         {

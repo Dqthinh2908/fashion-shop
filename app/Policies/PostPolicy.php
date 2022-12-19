@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Brand;
+use App\Models\Post;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BrandPolicy
+class PostPolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class BrandPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Post  $post
      * @return mixed
      */
     public function view(User $user)
     {
-        return $user->checkPermissionAccess('list_brand');
+        return $user->checkPermissionAccess('list_post');
     }
 
     /**
@@ -41,41 +41,41 @@ class BrandPolicy
      */
     public function create(User $user)
     {
-        return $user->checkPermissionAccess('add_brand');
+        return $user->checkPermissionAccess('add_post');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Post  $post
      * @return mixed
      */
     public function update(User $user)
     {
-        return $user->checkPermissionAccess('update_brand');
+        return $user->checkPermissionAccess('update_post');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Post  $post
      * @return mixed
      */
     public function delete(User $user)
     {
-        return $user->checkPermissionAccess('delete_brand');
+        return $user->checkPermissionAccess('delete_post');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Post  $post
      * @return mixed
      */
-    public function restore(User $user, Banner $banner)
+    public function restore(User $user, Post $post)
     {
         //
     }
@@ -84,10 +84,10 @@ class BrandPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Banner  $banner
+     * @param  \App\Post  $post
      * @return mixed
      */
-    public function forceDelete(User $user, Banner $banner)
+    public function forceDelete(User $user, Post $post)
     {
         //
     }
