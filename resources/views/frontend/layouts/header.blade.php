@@ -185,7 +185,6 @@
                                                 {{Helper::getHeaderCategory()}}
                                             <li class="{{Request::path()=='blog' ? 'active' : ''}}"><a href="{{route('blog')}}">Bài viết</a></li>
 
-                                            <li class="{{Request::path()=='contact' ? 'active' : ''}}"><a href="{{route('contact')}}">Liên hệ</a></li>
                                         </ul>
                                     </div>
                                 </div>

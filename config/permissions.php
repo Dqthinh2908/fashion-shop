@@ -20,6 +20,10 @@ return [
             'post_category',
             'tags',
             'coupon',
+            'media',
+            'setting',
+            'comment',
+            'tags'
         ],
     'module_childrent'=>[
         'list' => 'Danh sách',

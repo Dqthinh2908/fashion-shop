@@ -28,12 +28,14 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <!-- Nav Item - Charts -->
+    @can('list_media')
     <li class="nav-item">
         <a class="nav-link" href="{{route('file-manager')}}">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Quản lý phương tiện</span></a>
     </li>
-
+    @endcan
+    @can('list_banner')
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
         <i class="fas fa-image"></i>
@@ -47,6 +49,7 @@
         </div>
       </div>
     </li>
+    @endcan
     <!-- Divider -->
     <hr class="sidebar-divider">
         <!-- Heading -->
@@ -55,6 +58,7 @@
         </div>
 
     <!-- Categories -->
+    @can('list_categories')
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categoryCollapse" aria-expanded="true" aria-controls="categoryCollapse">
           <i class="fas fa-sitemap"></i>
@@ -68,7 +72,9 @@
           </div>
         </div>
     </li>
+    @endcan
     {{-- Products --}}
+    @can('list_products')
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#productCollapse" aria-expanded="true" aria-controls="productCollapse">
           <i class="fas fa-cubes"></i>
@@ -82,8 +88,10 @@
           </div>
         </div>
     </li>
+    @endcan
 
     {{-- Brands --}}
+    @can('list_brand')
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#brandCollapse" aria-expanded="true" aria-controls="brandCollapse">
           <i class="fas fa-table"></i>
@@ -97,8 +105,10 @@
           </div>
         </div>
     </li>
+    @endcan
 
     {{-- Shipping --}}
+    @can('list_transfer')
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#shippingCollapse" aria-expanded="true" aria-controls="shippingCollapse">
           <i class="fas fa-truck"></i>
@@ -112,21 +122,26 @@
           </div>
         </div>
     </li>
+    @endcan
 
     <!--Orders -->
+    @can('list_order')
     <li class="nav-item">
         <a class="nav-link" href="{{route('order.index')}}">
             <i class="fas fa-hammer fa-chart-area"></i>
             <span>Đặt hàng</span>
         </a>
     </li>
+    @endcan
 
     <!-- Reviews -->
+    @can('list_review')
     <li class="nav-item">
         <a class="nav-link" href="{{route('review.index')}}">
             <i class="fas fa-comments"></i>
             <span>Đánh giá</span></a>
     </li>
+    @endcan
 
 
     <!-- Divider -->
@@ -138,6 +153,7 @@
     </div>
 
     <!-- Posts -->
+    @can('list_post')
     <li class="nav-item">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#postCollapse" aria-expanded="true" aria-controls="postCollapse">
         <i class="fas fa-fw fa-folder"></i>
@@ -151,8 +167,10 @@
         </div>
       </div>
     </li>
+    @endcan
 
      <!-- Category -->
+    @can('list_post_category')
      <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#postCategoryCollapse" aria-expanded="true" aria-controls="postCategoryCollapse">
           <i class="fas fa-sitemap fa-folder"></i>
@@ -166,8 +184,10 @@
           </div>
         </div>
       </li>
+    @endcan
 
       <!-- Tags -->
+    @can('list_tags')
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#tagCollapse" aria-expanded="true" aria-controls="tagCollapse">
             <i class="fas fa-tags fa-folder"></i>
@@ -181,14 +201,18 @@
             </div>
         </div>
     </li>
+    @endcan
 
       <!-- Comments -->
+    @can('list_comment')
       <li class="nav-item">
         <a class="nav-link" href="{{route('comment.index')}}">
             <i class="fas fa-comments fa-chart-area"></i>
             <span>Bình luận</span>
         </a>
       </li>
+    @endcan
+    @can('list_role')
     <div class="sidebar-heading">
         Phân Quyền
     </div>
@@ -206,6 +230,7 @@
             </div>
         </div>
     </li>
+    @endcan
 
 
     <!-- Divider -->
@@ -214,24 +239,29 @@
     <div class="sidebar-heading">
         Cài đặt chung
     </div>
+    @can('list_coupon')
     <li class="nav-item">
       <a class="nav-link" href="{{route('coupon.index')}}">
           <i class="fas fa-table"></i>
           <span>Mã giảm giá</span></a>
     </li>
+    @endcan
      <!-- Users -->
+    @can('list_account')
      <li class="nav-item">
         <a class="nav-link" href="{{route('users.index')}}">
             <i class="fas fa-users"></i>
             <span>Người dùng</span></a>
     </li>
+    @endcan
      <!-- General settings -->
+    @can('list_setting')
      <li class="nav-item">
         <a class="nav-link" href="{{route('settings')}}">
             <i class="fas fa-cog"></i>
             <span>Cài đặt</span></a>
     </li>
-
+    @endcan
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
       <button class="rounded-circle border-0" id="sidebarToggle"></button>

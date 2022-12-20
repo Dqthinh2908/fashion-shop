@@ -17,6 +17,14 @@ class PermissionGateAndPolicyAccess{
         $this->defineGateRole();
         $this->defineGateUser();
         $this->defineGateCoupon();
+        $this->defineGateMedia();
+        $this->defineGateProductReview();
+        $this->defineGatePostTag();
+        $this->defineGateComment();
+        $this->defineGateSetting();
+
+
+
     }
     public function defineGateBanner()
     {
@@ -88,6 +96,36 @@ class PermissionGateAndPolicyAccess{
         Gate::define('add_coupon', 'App\Policies\CouponPolicy@create');
         Gate::define('update_coupon', 'App\Policies\CouponPolicy@update');
         Gate::define('delete_coupon','App\Policies\CouponPolicy@delete');
+    }
+    public function defineGateMedia()
+    {
+        Gate::define('list_media','App\Policies\MediaPolicy@view');
+    }
+    public function defineGateProductReview()
+    {
+        Gate::define('list_review','App\Policies\ProductReviewPolicy@view');
+        Gate::define('add_review', 'App\Policies\ProductReviewPolicy@create');
+        Gate::define('update_review', 'App\Policies\ProductReviewPolicy@update');
+        Gate::define('delete_review','App\Policies\ProductReviewPolicy@delete');
+    }
+    public function defineGatePostTag()
+    {
+        Gate::define('list_tags','App\Policies\PostTagPolicy@view');
+        Gate::define('add_tags', 'App\Policies\PostTagPolicy@create');
+        Gate::define('update_tags', 'App\Policies\PostTagPolicy@update');
+        Gate::define('delete_tags','App\Policies\PostTagPolicy@delete');
+    }
+    public function defineGateComment()
+    {
+        Gate::define('list_comment','App\Policies\CommentPolicy@view');
+        Gate::define('add_comment', 'App\Policies\CommentPolicy@create');
+        Gate::define('update_comment', 'App\Policies\CommentPolicy@update');
+        Gate::define('delete_comment','App\Policies\CommentPolicy@delete');
+    }
+    public function defineGateSetting()
+    {
+        Gate::define('list_setting','App\Policies\SettingPolicy@view');
+        Gate::define('update_setting', 'App\Policies\SettingPolicy@update');
     }
 
 

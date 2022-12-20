@@ -72,6 +72,7 @@ class ProductController extends Controller
 
         $data = $request->all();
         $slug = Str::slug($request->title);
+        $data['photo'] = str_replace('http://localhost','',$data['photo']);
         $count = Product::where('slug', $slug)->count();
         if ($count > 0) {
             $slug = $slug . '-' . date('ymdis') . '-' . rand(0, 999);

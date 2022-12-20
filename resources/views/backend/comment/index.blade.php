@@ -17,7 +17,7 @@
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Tác giả</th>
               <th>Tiêu đề bài viết</th>
               <th>Tin nhắn</th>
@@ -27,26 +27,27 @@
             </tr>
           </thead>
           <tbody>
+          <?php  $i = 1?>
             @foreach($comments as $comment)
                 <tr>
-                    <td>{{$comment->id}}</td>
-                    <td>{{$comment->user_info['name']}}</td>
-                    <td>{{$comment->post->title}}</td>
-                    <td>{{$comment->comment}}</td>
-                    <td>{{$comment->created_at->format('M d D, Y g: i a')}}</td>
+                    <td>{{@$i++}}</td>
+                    <td>{{@$comment->user_info['name']}}</td>
+                    <td>{{@$comment->post->title}}</td>
+                    <td>{{@$comment->comment}}</td>
+                    <td>{{@$comment->created_at->format('M d D, Y g: i a')}}</td>
                     <td>
-                        @if($comment->status=='active')
-                          <span class="badge badge-success">{{$comment->status}}</span>
+                        @if(@$comment->status=='active')
+                          <span class="badge badge-success">{{@$comment->status}}</span>
                         @else
-                          <span class="badge badge-warning">{{$comment->status}}</span>
+                          <span class="badge badge-warning">{{@$comment->status}}</span>
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('comment.edit',$comment->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="Sửa" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                        <form method="POST" action="{{route('comment.destroy',[$comment->id])}}">
+                        <a href="{{route('comment.edit',@$comment->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="Sửa" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                        <form method="POST" action="{{route('comment.destroy',[@$comment->id])}}">
                           @csrf
                           @method('delete')
-                              <button class="btn btn-danger btn-sm dltBtn" data-id={{$comment->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                              <button class="btn btn-danger btn-sm dltBtn" data-id={{@$comment->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Xóa"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                 </tr>

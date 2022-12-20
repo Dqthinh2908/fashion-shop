@@ -17,7 +17,7 @@
         <table class="table table-bordered" id="order-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Đánh giá bởi</th>
               <th>Tiêu đề sản phẩm</th>
               <th>Đánh giá</th>
@@ -28,9 +28,10 @@
             </tr>
           </thead>
           <tbody>
+          <?php $i = 1 ?>
             @foreach($reviews as $review)
                 <tr>
-                    <td>{{@$review->id}}</td>
+                    <td>{{@$i++}}</td>
                     <td>{{@$review->user_info['name']}}</td>
                     <td>{{@$review->product->title}}</td>
                     <td>{{@$review->review}}</td>

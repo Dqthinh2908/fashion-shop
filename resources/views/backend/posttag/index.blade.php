@@ -18,7 +18,7 @@
         <table class="table table-bordered" id="post-category-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Tiêu đề</th>
               <th>Tóm tắt</th>
               <th>Trạng thái</th>
@@ -26,21 +26,22 @@
             </tr>
           </thead>
           <tbody>
+          <?php $i = 1 ?>
             @foreach($postTags as $data)
                 <tr>
-                    <td>{{$data->id}}</td>
-                    <td>{{$data->title}}</td>
-                    <td>{{$data->slug}}</td>
+                    <td>{{@$i++}}</td>
+                    <td>{{@$data->title}}</td>
+                    <td>{{@$data->slug}}</td>
                     <td>
-                        @if($data->status=='active')
-                            <span class="badge badge-success">{{$data->status}}</span>
+                        @if(@$data->status=='active')
+                            <span class="badge badge-success">{{@$data->status}}</span>
                         @else
-                            <span class="badge badge-warning">{{$data->status}}</span>
+                            <span class="badge badge-warning">{{@$data->status}}</span>
                         @endif
                     </td>
                     <td>
-                        <a href="{{route('post-tag.edit',$data->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="Sửa" data-placement="bottom"><i class="fas fa-edit"></i></a>
-                    <form method="POST" action="{{route('post-tag.destroy',[$data->id])}}">
+                        <a href="{{route('post-tag.edit',@$data->id)}}" class="btn btn-primary btn-sm float-left mr-1" style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" title="Sửa" data-placement="bottom"><i class="fas fa-edit"></i></a>
+                    <form method="POST" action="{{route('post-tag.destroy',[@$data->id])}}">
                       @csrf
                       @method('delete')
                           <button class="btn btn-danger btn-sm dltBtn" data-id={{$data->id}} style="height:30px; width:30px;border-radius:50%" data-toggle="tooltip" data-placement="bottom" title="Xóa"><i class="fas fa-trash-alt"></i></button>

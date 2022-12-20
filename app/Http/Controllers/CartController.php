@@ -58,7 +58,12 @@ class CartController extends Controller
 
             if ($cart->product->purchase->quantity < $cart->quantity || $cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
             $cart->save();
-            $wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id', null)->update(['cart_id' => $cart->id]);
+
+        }
+        $wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id', null)->where('product_id',$product->id)->first();
+        if(!empty($wishlist))
+        {
+            $wishlist->delete();
         }
         request()->session()->flash('success', 'Sản phẩm đã thêm vào giỏ hàng thành công!');
         return back();
@@ -107,6 +112,11 @@ class CartController extends Controller
             if ($cart->product->purchase->quantity < $cart->quantity || $cart->product->purchase->quantity <= 0) return back()->with('error', 'Hàng không đủ!');
             // return $cart;
             $cart->save();
+        }
+        $wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id', null)->where('product_id',$product->id)->first();
+        if(!empty($wishlist))
+        {
+            $wishlist->delete();
         }
         request()->session()->flash('success', 'Sản phẩm thêm vào giỏ hàng thành công.');
         return back();

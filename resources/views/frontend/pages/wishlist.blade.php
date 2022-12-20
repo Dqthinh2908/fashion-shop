@@ -22,49 +22,63 @@
 	<div class="shopping-cart section">
 		<div class="container">
 			<div class="row">
-				<div class="col-12">
 					<!-- Shopping Summery -->
-					<table class="table shopping-summery">
-						<thead>
-							<tr class="main-hading">
-								<th>SẢN PHẨM</th>
-								<th>TÊN</th>
-								<th class="text-center">TỔNG</th>
-								<th class="text-center">THÊM VÀO GIỎ HÀNG</th>
-								<th class="text-center"><i class="ti-trash remove-icon"></i></th>
-							</tr>
-						</thead>
-						<tbody>
-							@if(Helper::getAllProductFromWishlist())
+							@if(count(Helper::getAllProductFromWishlist()) > 0)
 								@foreach(Helper::getAllProductFromWishlist() as $key=>$wishlist)
-									<tr>
-										@php
-											$photo=explode(',',$wishlist->product['photo']);
-										@endphp
-										<td class="image" data-title="No"><img src="{{$photo[0]}}" alt="{{$photo[0]}}"></td>
-										<td class="product-des" data-title="Description">
-											<p class="product-name"><a href="{{route('product-detail',$wishlist->product['slug'])}}">{{$wishlist->product['title']}}</a></p>
-											<p class="product-des">{!!($wishlist['summary']) !!}</p>
-										</td>
-										<td class="total-amount" data-title="Total"><span>{{$wishlist['amount']}} vnđ</span></td>
-										<td><a href="{{route('add-to-cart',$wishlist->product['slug'])}}" class='btn text-white'>Thêm vào giỏ hàng</a></td>
-										<td class="action" data-title="Remove"><a href="{{route('wishlist-delete',$wishlist->id)}}"><i class="ti-trash remove-icon"></i></a></td>
-									</tr>
+                                    <?php $product = $wishlist->product ?>
+                                        <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item {{@$product->cat_id}}">
+                                            <div class="single-product">
+                                                <div class="product-img">
+                                                    <a href="{{route('product-detail',$product->slug)}}">
+                                                        @php
+                                                            $photo=explode(',',@$product->photo);
+                                                        // dd($photo);
+                                                        @endphp
+                                                        <img class="default-img" src="{{@$photo[0]}}" alt="{{@$photo[0]}}">
+                                                        <img class="hover-img" src="{{@$photo[0]}}" alt="{{@$photo[0]}}">
+                                                    </a>
+                                                    <div class="button-head">
+                                                        <div class="product-action-2">
+                                                            <a title="Thêm giỏ hàng" href="{{route('add-to-cart',@$product->slug)}}">Thêm giỏ hàng</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-content">
+                                                    <h3><a href="{{route('product-detail',@$product->slug)}}">{{@$product->title}}</a></h3>
+                                                    <div class="product-price">
+                                                        @php
+                                                            $after_discount=(@$product->price-($product->price*$product->discount)/100);
+                                                        @endphp
+                                                        <span>{{number_format(@$after_discount,0)}} vnđ</span>
+                                                        <del style="padding-left:4%;">{{number_format(@$product->price,0)}} vnđ</del>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+{{--										@php--}}
+{{--											$photo=explode(',',$wishlist->product['photo']);--}}
+{{--										@endphp--}}
+{{--										<td class="image" data-title="No"><img src="{{$photo[0]}}" alt="{{$photo[0]}}"></td>--}}
+{{--										<td class="product-des" data-title="Description">--}}
+{{--											<p class="product-name"><a href="{{route('product-detail',$wishlist->product['slug'])}}">{{$wishlist->product['title']}}</a></p>--}}
+{{--											<p class="product-des">{!!($wishlist['summary']) !!}</p>--}}
+{{--										</td>--}}
+{{--										<td class="total-amount" data-title="Total"><span>{{$wishlist['amount']}} vnđ</span></td>--}}
+{{--										<td><a href="{{route('add-to-cart',$wishlist->product['slug'])}}" class='btn text-white'>Thêm vào giỏ hàng</a></td>--}}
+{{--										<td class="action" data-title="Remove"><a href="{{route('wishlist-delete',$wishlist->id)}}"><i class="ti-trash remove-icon"></i></a></td>--}}
 								@endforeach
 							@else
-								<tr>
-									<td class="text-center">
+								<div>
+									<p class="text-center">
 										Không có sản phẩm trong danh sách yêu thích. <a href="{{route('product-grids')}}" style="color:blue;">Tiếp tục mua sắm</a>
-
-									</td>
-								</tr>
+									</p>
+								</div>
 							@endif
 
 
 						</tbody>
 					</table>
 					<!--/ End Shopping Summery -->
-				</div>
 			</div>
 		</div>
 	</div>
@@ -118,119 +132,6 @@
 	@include('frontend.layouts.newsletter')
 
 
-
-	<!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="ti-close" aria-hidden="true"></span></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row no-gutters">
-                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                <!-- Product Slider -->
-									<div class="product-gallery">
-										<div class="quickview-slider-active">
-											<div class="single-slider">
-												<img src="images/modal1.jpg" alt="#">
-											</div>
-											<div class="single-slider">
-												<img src="images/modal2.jpg" alt="#">
-											</div>
-											<div class="single-slider">
-												<img src="images/modal3.jpg" alt="#">
-											</div>
-											<div class="single-slider">
-												<img src="images/modal4.jpg" alt="#">
-											</div>
-										</div>
-									</div>
-								<!-- End Product slider -->
-                            </div>
-                            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                                <div class="quickview-content">
-                                    <h2>Flared Shift Dress</h2>
-                                    <div class="quickview-ratting-review">
-                                        <div class="quickview-ratting-wrap">
-                                            <div class="quickview-ratting">
-                                                <i class="yellow fa fa-star"></i>
-                                                <i class="yellow fa fa-star"></i>
-                                                <i class="yellow fa fa-star"></i>
-                                                <i class="yellow fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                            <a href="#"> (1 customer review)</a>
-                                        </div>
-                                        <div class="quickview-stock">
-                                            <span><i class="fa fa-check-circle-o"></i> in stock</span>
-                                        </div>
-                                    </div>
-                                    <h3>$29.00</h3>
-                                    <div class="quickview-peragraph">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia iste laborum ad impedit pariatur esse optio tempora sint ullam autem deleniti nam in quos qui nemo ipsum numquam.</p>
-                                    </div>
-									<div class="size">
-										<div class="row">
-											<div class="col-lg-6 col-12">
-												<h5 class="title">Size</h5>
-												<select>
-													<option selected="selected">s</option>
-													<option>m</option>
-													<option>l</option>
-													<option>xl</option>
-												</select>
-											</div>
-											<div class="col-lg-6 col-12">
-												<h5 class="title">Color</h5>
-												<select>
-													<option selected="selected">orange</option>
-													<option>purple</option>
-													<option>black</option>
-													<option>pink</option>
-												</select>
-											</div>
-										</div>
-									</div>
-                                    <div class="quantity">
-										<!-- Input Order -->
-										<div class="input-group">
-											<div class="button minus">
-												<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-													<i class="ti-minus"></i>
-												</button>
-											</div>
-											<input type="text" name="quant[1]" class="input-number"  data-min="1" data-max="1000" value="1">
-											<div class="button plus">
-												<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-													<i class="ti-plus"></i>
-												</button>
-											</div>
-										</div>
-										<!--/ End Input Order -->
-									</div>
-									<div class="add-to-cart">
-										<a href="#" class="btn">Add to cart</a>
-										<a href="#" class="btn min"><i class="ti-heart"></i></a>
-										<a href="#" class="btn min"><i class="fa fa-compress"></i></a>
-									</div>
-                                    <div class="default-social">
-										<h4 class="share-now">Share:</h4>
-                                        <ul>
-                                            <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                                            <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                                            <li><a class="youtube" href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                                            <li><a class="dribbble" href="#"><i class="fa fa-google-plus"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal end -->
 
 @endsection
 @push('scripts')
