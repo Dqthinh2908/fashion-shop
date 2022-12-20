@@ -29,9 +29,9 @@
           </thead>
           <tbody>
           <?php $i = 1 ?>
-            @foreach($reviews as $review)
+          @foreach($reviews as $review)
                 <tr>
-                    <td>{{@$i++}}</td>
+                    <td>{{$i++}}</td>
                     <td>{{@$review->user_info['name']}}</td>
                     <td>{{@$review->product->title}}</td>
                     <td>{{@$review->review}}</td>

@@ -18,7 +18,7 @@
         <table class="table table-bordered" id="post-category-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Tiêu đề</th>
               <th>Tóm tắt</th>
               <th>Trạng thái</th>
@@ -26,11 +26,12 @@
             </tr>
           </thead>
           <tbody>
+          <?php $i =1  ?>
             @foreach($postCategories as $data)
                 <tr>
-                    <td>{{$data->id}}</td>
-                    <td>{{$data->title}}</td>
-                    <td>{{$data->slug}}</td>
+                    <td>{{@$i++}}</td>
+                    <td>{{@$data->title}}</td>
+                    <td>{{@$data->slug}}</td>
                     <td>
                         @if($data->status=='active')
                             <span class="badge badge-success">{{$data->status}}</span>

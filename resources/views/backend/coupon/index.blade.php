@@ -18,7 +18,7 @@
         <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Mã giảm giá</th>
               <th>Kiểu</th>
               <th>Giá trị</th>
@@ -27,25 +27,26 @@
             </tr>
           </thead>
           <tbody>
+          <?php $i = 1 ?>
             @foreach($coupons as $coupon)
                 <tr>
-                    <td>{{$coupon->id}}</td>
-                    <td>{{$coupon->code}}</td>
+                    <td>{{@$i++}}</td>
+                    <td>{{@$coupon->code}}</td>
                     <td>
-                        @if($coupon->type=='fixed')
-                            <span class="badge badge-primary">{{$coupon->type}}</span>
+                        @if(@$coupon->type=='fixed')
+                            <span class="badge badge-primary">{{@$coupon->type}}</span>
                         @else
-                            <span class="badge badge-warning">{{$coupon->type}}</span>
+                            <span class="badge badge-warning">{{@$coupon->type}}</span>
                         @endif
                     </td>
                     <td>
-                        @if($coupon->type=='fixed')
-                            {{number_format($coupon->value,0)}} vnđ
+                        @if(@$coupon->type=='fixed')
+                            {{number_format(@$coupon->value,0)}} vnđ
                         @else
-                            {{$coupon->value}}%
+                            {{@$coupon->value}}%
                         @endif</td>
                     <td>
-                        @if($coupon->status=='active')
+                        @if(@$coupon->status=='active')
                             <span class="badge badge-success">{{$coupon->status}}</span>
                         @else
                             <span class="badge badge-warning">{{$coupon->status}}</span>

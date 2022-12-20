@@ -18,7 +18,7 @@
         <table class="table table-bordered" id="product-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Tiêu đề</th>
               <th>Danh mục</th>
               <th>Tag</th>
@@ -29,19 +29,18 @@
             </tr>
           </thead>
           <tbody>
+          <?php $i = 1; ?>
 
             @foreach($posts as $post)
               @php
               $author_info=DB::table('users')->select('name')->where('id',$post->added_by)->get();
-              // dd($sub_cat_info);
-              // dd($author_info);
 
               @endphp
                 <tr>
-                    <td>{{$post->id}}</td>
-                    <td>{{$post->title}}</td>
-                    <td>{{$post->cat_info->title}}</td>
-                    <td>{{$post->tags}}</td>
+                    <td>{{@$i++}}</td>
+                    <td>{{@$post->title}}</td>
+                    <td>{{@$post->cat_info->title}}</td>
+                    <td>{{@$post->tags}}</td>
 
                     <td>
                       @foreach($author_info as $data)

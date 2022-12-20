@@ -18,7 +18,7 @@
         <table class="table table-bordered" id="banner-dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>ID</th>
+              <th>#</th>
               <th>Tiêu đề</th>
               <th>Tóm tắt</th>
               <th>Trạng thái</th>
@@ -26,11 +26,12 @@
             </tr>
           </thead>
           <tbody>
+          <?php $i = 1 ?>
             @foreach($brands as $brand)
                 <tr>
-                    <td>{{$brand->id}}</td>
-                    <td>{{$brand->title}}</td>
-                    <td>{{$brand->slug}}</td>
+                    <td>{{@$i++}}</td>
+                    <td>{{@$brand->title}}</td>
+                    <td>{{@$brand->slug}}</td>
                     <td>
                         @if($brand->status=='active')
                             <span class="badge badge-success">{{$brand->status}}</span>
