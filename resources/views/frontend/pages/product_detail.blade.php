@@ -66,6 +66,13 @@
 											<!-- Description -->
 											<div class="short">
 												<h4>{{$product_detail->title}}</h4>
+                                                <div class="quickview-stock">
+                                                    @if(isset($product_detail->purchase) && @$product_detail->purchase->quantity > 0)
+                                                        <span><i class="fa fa-check-circle-o"></i> {{@$product_detail->purchase->quantity}} trong kho</span>
+                                                    @else
+                                                        <span><i class="fa fa-times-circle-o text-danger"></i> Hết Hàng</span>
+                                                    @endif
+                                                </div>
 												<div class="rating-main">
 													<ul class="rating">
 														@php
@@ -86,6 +93,7 @@
                                                 @endphp
 												<p class="price"><span class="discount">{{number_format($after_discount,0)}} vnđ</span><s>{{number_format($product_detail->price,0)}} vnđ</s> </p>
 												<p class="description">{!!($product_detail->summary)!!}</p>
+
 											</div>
 											<!--/ End Description -->
 
@@ -187,7 +195,6 @@
 																<div class="comment-review">
 																	<div class="add-review">
 																		<h5>Thêm một đánh giá</h5>
-																		<p>Email của bạn sẽ được ẩn danh.</p>
 																	</div>
 																	<h4>Đánh giá của bạn <span class="text-danger">*</span></h4>
 																	<div class="review-inner">

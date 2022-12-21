@@ -22,6 +22,7 @@ class PermissionGateAndPolicyAccess{
         $this->defineGatePostTag();
         $this->defineGateComment();
         $this->defineGateSetting();
+        $this->defineGateProductCategory();
 
 
 
@@ -75,6 +76,13 @@ class PermissionGateAndPolicyAccess{
         Gate::define('add_post_category', 'App\Policies\PostCategoryPolicy@create');
         Gate::define('update_post_category', 'App\Policies\PostCategoryPolicy@update');
         Gate::define('delete_post_category','App\Policies\PostCategoryPolicy@delete');
+    }
+    public function defineGateProductCategory()
+    {
+        Gate::define('list_categories','App\Policies\CategoryPolicy@view');
+        Gate::define('add_categories', 'App\Policies\CategoryPolicy@create');
+        Gate::define('update_categories', 'App\Policies\CategoryPolicy@update');
+        Gate::define('delete_categories','App\Policies\CategoryPolicy@delete');
     }
     public function defineGateRole()
     {

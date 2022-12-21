@@ -38,7 +38,7 @@
 
       <!-- Nav Item - Alerts -->
       <li class="nav-item dropdown no-arrow mx-1">
-       @include('backend.notification.show')
+{{--       @include('backend.notification.show')--}}
       </li>
 
       <!-- Nav Item - Messages -->

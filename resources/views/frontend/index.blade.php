@@ -74,34 +74,34 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">
-                        <h2>DANH MỤC NỔI BẬT</h2>
+                        <h2>Tất cả thời trang</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="product-info">
-                        <div class="nav-main">
-                            <!-- Tab Nav -->
-                            <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">
-                                @php
-                                    $categories=DB::table('categories')->where('status','active')->where('is_parent',1)->get();
-                                    // dd($categories);
-                                @endphp
-                                @if($categories)
-                                <button class="btn" style="background:black"data-filter="*">
-                                    Tất cả thời trang
-                                </button>
-                                    @foreach($categories as $key=>$cat)
+{{--                        <div class="nav-main">--}}
+{{--                            <!-- Tab Nav -->--}}
+{{--                            <ul class="nav nav-tabs filter-tope-group" id="myTab" role="tablist">--}}
+{{--                                @php--}}
+{{--                                    $categories=DB::table('categories')->where('status','active')->where('is_parent',1)->get();--}}
+{{--                                    // dd($categories);--}}
+{{--                                @endphp--}}
+{{--                                @if($categories)--}}
+{{--                                <button class="btn" style="background:black"data-filter="*">--}}
+{{--                                    Tất cả thời trang--}}
+{{--                                </button>--}}
+{{--                                    @foreach($categories as $key=>$cat)--}}
 
-                                    <button class="btn" style="background:none;color:black;"data-filter=".{{$cat->id}}">
-                                        {{$cat->title}}
-                                    </button>
-                                    @endforeach
-                                @endif
-                            </ul>
-                            <!--/ End Tab Nav -->
-                        </div>
+{{--                                    <button class="btn" style="background:none;color:black;"data-filter=".{{$cat->id}}">--}}
+{{--                                        {{$cat->title}}--}}
+{{--                                    </button>--}}
+{{--                                    @endforeach--}}
+{{--                                @endif--}}
+{{--                            </ul>--}}
+{{--                            <!--/ End Tab Nav -->--}}
+{{--                        </div>--}}
                         <div class="tab-content isotope-grid" id="myTabContent">
                              <!-- Start Single Tab -->
                             @if($product_lists)
@@ -180,7 +180,7 @@
                             <img src="{{$photo[0]}}" alt="{{$photo[0]}}">
                             <div class="content">
                                 <p>{{$data->cat_info['title']}}</p>
-                                <h3>{{$data->title}} <br>Lên đến<span> {{$data->discount}}%</span></h3>
+                                <h3>{{$data->title}} <br>Lên đến<span> {{@$data->discount}}%</span></h3>
                                 <a href="{{route('product-detail',$data->slug)}}">Mua ngay</a>
                             </div>
                         </div>

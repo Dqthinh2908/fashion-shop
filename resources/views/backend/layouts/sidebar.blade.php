@@ -254,6 +254,13 @@
             <span>Người dùng</span></a>
     </li>
     @endcan
+    @can('list_account')
+        <li class="nav-item">
+            <a class="nav-link" href="{{route('user.customer')}}">
+                <i class="fas fa-users"></i>
+                <span>Khách hàng</span></a>
+        </li>
+    @endcan
      <!-- General settings -->
     @can('list_setting')
      <li class="nav-item">

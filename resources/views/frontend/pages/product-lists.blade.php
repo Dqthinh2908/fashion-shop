@@ -57,7 +57,7 @@
                                 </div>
                                 <!--/ End Single Widget -->
                                 <!-- Shop By Price -->
-								
+
 								<!--/ End Shop By Price -->
                                 <!-- Single Widget -->
                                 <div class="single-widget recent-post">
@@ -176,7 +176,7 @@
 															<h3 class="title"><a href="{{route('product-detail',$product->slug)}}">{{$product->title}}</a></h3>
 														</div>
 														<p class="des pt-2">{!! html_entity_decode($product->summary) !!}</p>
-														<a href="javascript:void(0)" class="btn cart" data-id="{{$product->id}}">Mua ngay!</a>
+														<a href="{{route('add-to-cart',$product->slug)}}" class="btn cart" data-id="{{$product->id}}">Mua ngay!</a>
 													</div>
 												</div>
 											</div>

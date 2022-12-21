@@ -103,6 +103,7 @@ Route::group(['prefix'=>'/admin','middleware'=>['auth','admin']],function(){
     })->name('file-manager');
     // user route
     Route::resource('users','UsersController');
+    Route::get('/user-customer','UsersController@indexCustomer')->name('user.customer');
     // Banner
     Route::resource('banner','BannerController');
     // Brand

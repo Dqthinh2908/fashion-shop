@@ -29,7 +29,10 @@ class CartController extends Controller
             request()->session()->flash('error', 'Sản phẩm không hợp lệ');
             return back();
         }
-        $product = $this->product::where('slug', $request->slug)->first();
+        $product = $this->product::where('slug', $request->slug)->with('purchase')->first();
+        if (isset($product->purchase) && $product->purchase->quantity < $request->quant[1] || !isset($product->purchase)) {
+            return back()->with('error', 'Hết hàng, Bạn có thể bổ sung các sản phẩm khác.');
+        }
         // return $product;
         if (empty($product)) {
             request()->session()->flash('error', 'Sản phẩm không hợp lệ');
@@ -83,6 +86,7 @@ class CartController extends Controller
         }
 
         $product = Product::where('slug', trim($request->slug))->with('purchase')->first();
+
         if (isset($product->purchase) && $product->purchase->quantity < $request->quant[1] || !isset($product->purchase)) {
             return back()->with('error', 'Hết hàng, Bạn có thể bổ sung các sản phẩm khác.');
         }

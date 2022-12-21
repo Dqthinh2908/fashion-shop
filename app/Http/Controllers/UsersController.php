@@ -30,8 +30,17 @@ class UsersController extends Controller
         {
             abort('403');
         }
-        $users = User::orderBy('id', 'ASC')->paginate(10);
+        $users = User::orderBy('id', 'ASC')->where('role','admin')->paginate(10);
         return view('backend.users.index')->with('users', $users);
+    }
+    public function indexCustomer()
+    {
+        if(Gate::denies('list_account'))
+        {
+            abort('403');
+        }
+        $users = User::orderBy('id', 'ASC')->where('role','user')->paginate(10);
+        return view('backend.users.indexCustomer')->with('users', $users);
     }
 
     /**

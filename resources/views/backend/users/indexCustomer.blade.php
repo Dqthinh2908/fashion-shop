@@ -9,7 +9,7 @@
          </div>
      </div>
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary float-left">Danh sách quản trị hệ thống</h6>
+      <h6 class="m-0 font-weight-bold text-primary float-left">Danh sách khách hàng</h6>
       <a href="{{route('users.create')}}" class="btn btn-primary btn-sm float-right" data-toggle="tooltip" data-placement="bottom" title="Thêm người dùng"><i class="fas fa-plus"></i> Thêm người dùng</a>
     </div>
     <div class="card-body">
