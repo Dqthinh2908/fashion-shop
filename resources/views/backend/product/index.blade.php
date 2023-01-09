@@ -28,6 +28,7 @@
               <th>Tình trạng</th>
               <th>Thương hiệu</th>
               <th>Số lượng</th>
+                <th>Trạng thái đơn hàng trong kho</th>
               <th>Ảnh</th>
               <th>Trạng thái</th>
               <th>Hành động</th>
@@ -62,6 +63,19 @@
                       @else
                       <span class="badge badge-danger">Hết hàng</span>
                       @endif
+                    </td>
+                    <td>
+                        @if(isset($product->purchase))
+                            @if($product->purchase->quantity < 10)
+                            <span class="badge badge-warning">Sắp hết hàng</span>
+                                @elseif($product->purchase->quantity > 10)
+                                <span class="badge badge-primary">Còn hàng</span>
+                                @elseif($product->purchase->quantity < 1)
+                                <span class="badge badge-danger">Hết hàng</span>
+                                @endif
+                            @else
+                            <span class="badge badge-danger">Chưa nhập kho</span>
+                        @endif
                     </td>
                     <td>
                         @if($product->photo)
